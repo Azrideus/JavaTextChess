@@ -13,14 +13,13 @@ public class ChessGame {
     Player currentPlayer;
     int limit;
     int currentMoves=0;
-    public ChessGame(Player p1,Player p2,int limit){
-        this.player1=p1;
-        this.player2=p2;
-        this.currentMoves=0;
-        this.limit=limit;
-        theGamePieces=new ChessPiece[9][9];
+    public ChessGame(Player p1,Player p2,int limit) {
+        this.player1 = p1;
+        this.player2 = p2;
+        this.currentMoves = 0;
+        this.limit = limit;
+        theGamePieces = new ChessPiece[9][9];
         //=========================================
-
         if(p1.getPlayerColor()==p2.getPlayerColor()){
             //Wrong player colors :
             p1.setPlayerColor(Constant.PlayerColor.White);
@@ -40,7 +39,7 @@ public class ChessGame {
 
         PrintBoard(true);
     }
-    private static void startTheGame(String p1,String p2,int limit){
+    public static void startTheGame(String p1,String p2,int limit){
         if(!p1.matches(Constant.regexAcceptableCharacters)){
             System.out.println(Constant.errInvalidUsername);
             return;
@@ -57,7 +56,11 @@ public class ChessGame {
             System.out.println(Constant.errNotExistPlayer);
             return;
         }
-        
+        else {
+            ChessGame theGame = new ChessGame(Player.getPlayerByName(p1),Player.getPlayerByName(p2),limit);
+            Menu.setMenuSituation(Menu.situation.gameMenue);
+        }
+
     }
     public void PrintBoard(boolean fancy){
         boolean IsFirst=true;

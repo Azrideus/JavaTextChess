@@ -1,6 +1,7 @@
 package com.company.Structs;
 
 import com.company.Classes.Constant;
+import com.company.Main;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +15,7 @@ public class Player {
 	private int win;
 	private int lose;
 	private int draw;
+	private int score;
 	public static List<ChessPiece> MyChessPieces;
 
 	public Player(String name,String pass,Boolean isLogined) {
@@ -21,6 +23,13 @@ public class Player {
 		this.pass=pass;
 		this.isLogined=isLogined;
 		allPlayers.add(this);
+	}
+	public void logOut(){
+		System.out.println(Constant.successLogOut);
+		this.isLogined=false;
+		//=============CHANGE SITUATION=====================
+		Menu.setMenuSituation(Menu.situation.loginMenu);
+		//=============CHANGE SITUATION=====================
 	}
 	public static void register(String name,String pass) {
 		if(!MatchAcceptableUsername(name))return;
@@ -49,7 +58,7 @@ public class Player {
 		}
 		else player.isLogined=true;
 		System.out.println(Constant.successLogin);
-
+		Main.p1 = player;
 		//=============CHANGE SITUATION=====================
 		Menu.setMenuSituation(Menu.situation.mainMenu);
 		//=============CHANGE SITUATION=====================
@@ -127,4 +136,12 @@ public class Player {
 		this.playerColor = playerColor;
 	}
 }
+
+	public int getScore() {
+		return score;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
+	}
 

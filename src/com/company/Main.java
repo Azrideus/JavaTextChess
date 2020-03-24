@@ -12,7 +12,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Main {
-
+    public static Player p1;
     public static ChessGame TheGame;
     public static void main(String[] args) {
 
@@ -29,8 +29,20 @@ public class Main {
 
     private static void mainMenu(String input){
         if(input.matches(Constant.regexNewGame)){
-            StartTheGame();
+            Matcher matcher = getMatcher(input,Constant.regexNewGame);
+            ChessGame.startTheGame(matcher.group(1),p1.getPlayerName(),Integer.valueOf(matcher.group(2)));
         }
+        else if(input.equals("list_users")) {
+            myFunc.printPlayerNamesByOrder(Player.allPlayers,false);
+        }
+        else if(input.equals("help")) {
+            System.out.println(Menu.help);
+        }
+        else if(input.equals("scoreboard")){
+            myFunc.printPlayerNamesByOrder(Player.allPlayers,true);
+        }
+        else if(input.equals("logout")) p1.logOut();
+        else System.out.println(Constant.errInvalidCmd);
     }
 
 
@@ -57,11 +69,12 @@ public class Main {
             Player.remove(matcher.group(1),matcher.group(2));
         }
         else if(input.equals("list_users")) {
-            myFunc.printPlayerNamesByAlphabeticallyOrder(Player.allPlayers);
+            myFunc.printPlayerNamesByOrder(Player.allPlayers,false);
         }
         else if(input.equals("help")) {
             System.out.println(Menu.help);
         }
+        else if(input.equals("exit")) System.out.println("program ended");
         else System.out.println(Constant.errInvalidCmd);
     }
 

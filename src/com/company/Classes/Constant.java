@@ -11,7 +11,6 @@ public class Constant {
 	public  static String regexLogin="login (.*?) (.*?)$";
 	public  static String regexRemove="remove (.*?) (.*?)$";
 	public  static String regexNewGame="new_game (.*?) (.*?)$";
-
 	public  static String errNotExistPlayer="no user exists with this username";
 	public  static String errInvalidLimit="number should be positive to have a limit or 0 for no limit";
 	public  static String errChooseAnotherPlayer="you must choose another player to start a game";
@@ -22,5 +21,6 @@ public class Constant {
 	public  static String successRegister="register successful";
 	public  static String successLogin="login successful";
 	public  static String successRemove="removed * successfully";
+	public  static String successLogOut="logout successful";
 	public  static String errInvalidCmd="invalid command";
 }

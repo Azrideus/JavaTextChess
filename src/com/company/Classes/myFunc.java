@@ -24,10 +24,44 @@ public class myFunc {
         }
         return players;
     }
-    public static void printPlayerNamesByAlphabeticallyOrder(List<Player> players){
-        List<Player> p = playersOrderAlphabetically(players);
+    public static void printPlayerNamesByOrder(List<Player> players,Boolean isScoarBoard){
+        if(!isScoarBoard) {
+            List<Player> p = playersOrderAlphabetically(players);
+        }
+        else{
+            List<Player> p = playersOrderScoreboard(players);
+        }
         for(int i=0;i<players.size();i++){
             System.out.println(players.get(i).getPlayerName());
         }
+    }
+    private static List<Player> swichPlayers(List<Player> players,int index1,int index2){
+        players = swichPlayers(players,j,j+1);
+        return players;
+    }
+    private static List<Player> playersOrderScoreboard(List<Player> players){
+        for (int i=0;i<players.size();i++){
+            for(int j=0;j<players.size()-1-i;j++){
+                Player p1 = players.get(j);
+                Player p2 = players.get(j+1);
+                if(p1.getScore()<p2.getScore()){
+                    players = swichPlayers(players,j,j+1);
+                }
+                else if(p1.getScore()==p2.getScore()){
+                    if(p1.getWin()<p2.getWin()){
+                        players = swichPlayers(players,j,j+1);
+                    }
+                    else if(p1.getWin()==p2.getWin()) {
+                        if(p1.getDraw()<p2.getDraw()) {
+                            players = swichPlayers(players, j, j + 1);
+                        }
+                        else if(players.get(j).getPlayerName().compareTo(players.get(j+1).getPlayerName())>0)
+                            players = swichPlayers(players,j,j+1);
+                    }
+                }
+
+            }
+        }
+        return players;
     }
 }
