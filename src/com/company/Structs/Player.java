@@ -19,14 +19,9 @@ public class Player {
 
 
 	public static void register(String name,String pass) {
-		if(!name.matches(Constant.regexAcceptableCharacters)) {
-			System.out.println(Constant.errInvalidUsername);
-			return;
-		}
-		else if(!pass.matches(Constant.regexAcceptableCharacters)) {
-			System.out.println(Constant.errInvalidPass);
-			return;
-		}
+		if(!MatchAcceptableUsername(name))return;
+		else if(!MatchAcceptablePass(pass))return;
+		
 		Player player = getPlayerByName(name);
 		if(player!=null) {
 			System.out.println(Constant.errUserAlreadyExist);
@@ -36,15 +31,9 @@ public class Player {
 		System.out.println(Constant.successRegister);
 	}
 	public static void login(String name,String pass) {
-		
-		if(!name.matches(Constant.regexAcceptableCharacters)) {
-			System.out.println(Constant.errInvalidUsername);
-			return;
-		}
-		else if(!pass.matches(Constant.regexAcceptableCharacters)) {
-			System.out.println(Constant.errInvalidPass);
-			return;
-		}
+		if(!MatchAcceptableUsername(name))return;
+		else if(!MatchAcceptablePass(pass))return;
+
 		Player player = getPlayerByName(name);
 		if(player==null) {
 			System.out.println(Constant.errNotExistPlayer);
@@ -59,14 +48,9 @@ public class Player {
 		System.out.println(Constant.successLogin);
 	}
 	public static void remove(String name,String pass) {
-		if(!name.matches(Constant.regexAcceptableCharacters)) {
-			System.out.println(Constant.errInvalidUsername);
-			return;
-		}
-		else if(!pass.matches(Constant.regexAcceptableCharacters)) {
-			System.out.println(Constant.errInvalidPass);
-			return;
-		}
+		if(!MatchAcceptableUsername(name))return;
+		else if(!MatchAcceptablePass(pass))return;
+
 		Player player = getPlayerByName(name);
 		if(player==null) {
 			System.out.println(Constant.errNotExistPlayer);
@@ -85,6 +69,12 @@ public class Player {
 	public static boolean MatchAcceptableUsername(String name) {
 		if(!name.matches(Constant.regexAcceptableCharacters)) {
 			System.out.println(Constant.errInvalidUsername);
+			return false;
+		}
+		return true;
+	}public static boolean MatchAcceptablePass(String pass) {
+		if(!pass.matches(Constant.regexAcceptableCharacters)) {
+			System.out.println(Constant.errInvalidPass);
 			return false;
 		}
 		return true;
