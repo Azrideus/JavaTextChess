@@ -44,7 +44,7 @@ public class ChessGame {
             p.isFirstMove=true;
         }
         currentPlayer=player1;
-        //=========================================
+        //========================================
         //PrintBoard(true);
     }
 
