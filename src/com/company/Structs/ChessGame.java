@@ -17,12 +17,6 @@ public class ChessGame {
     Player currentPlayer;
     int limit;
     int currentMoves=0;
-    public ChessGame(Player p1,Player p2,int limit) {
-        this.player1 = p1;
-        this.player2 = p2;
-        this.currentMoves = 0;
-        this.limit = limit;
-        theGamePieces = new ChessPiece[9][9];
     public ChessGame(Player p1,Player p2,int limit){
         this.player1=p1;
         this.player2=p2;
@@ -31,6 +25,7 @@ public class ChessGame {
         theGamePieces=new ChessPiece[9][9];
         GameMoves=new ArrayList<ChessMove>();
         //=========================================
+
         if(p1.getPlayerColor()==p2.getPlayerColor()){
             //Wrong player colors :
             p1.setPlayerColor(Constant.PlayerColor.White);
@@ -52,10 +47,6 @@ public class ChessGame {
         //=========================================
         //PrintBoard(true);
     }
-    public static void startTheGame(String p1,String p2,int limit){
-        if(!p1.matches(Constant.regexAcceptableCharacters)){
-            System.out.println(Constant.errInvalidUsername);
-            return;
 
     public boolean MakeMove(int fx,int fy,int tx,int ty){
         if(fx<1||fy<1||tx<1||ty<1
@@ -87,11 +78,6 @@ public class ChessGame {
             //invalid , cant make that move
             return false;
         }
-        else {
-            ChessGame theGame = new ChessGame(Player.getPlayerByName(p1),Player.getPlayerByName(p2),limit);
-            Menu.setMenuSituation(Menu.situation.gameMenue);
-        }
-
 
         //===================================
         //Make the move
