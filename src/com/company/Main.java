@@ -14,11 +14,21 @@ import java.util.regex.Pattern;
 public class Main {
     public static Player p1;
     public static ChessGame TheGame;
+
+    public static ChessGame theGame;
     public static void main(String[] args) {
 
         Scanner in = new Scanner(System.in);
 
+        theGame=new ChessGame(
+                new Player("test1","123",true)
+                ,new Player("test2","123",true),100);
 
+        theGame.PrintBoard(true,true);
+        var p1= theGame.GetPieceAtPos(1,4);
+        System.out.println(p1.mapIcon+" is at "+p1.x+" : "+p1.y);
+        theGame.MakeMove(1,2,3,1);
+        theGame.PrintBoard(true,true);
         while(true) {
             String line=in.nextLine();
             if(Menu.situ== Menu.situation.loginMenu) loginMenu(line);
@@ -37,6 +47,7 @@ public class Main {
         }
         else if(input.equals("help")) {
             System.out.println(Menu.help);
+
         }
         else if(input.equals("scoreboard")){
             myFunc.printPlayerNamesByOrder(Player.allPlayers,true);
@@ -44,15 +55,6 @@ public class Main {
         else if(input.equals("logout")) p1.logOut();
         else System.out.println(Constant.errInvalidCmd);
     }
-
-
-
-
-
-
-
-
-
 
 
     private static void loginMenu(String input) {
@@ -77,12 +79,6 @@ public class Main {
         else if(input.equals("exit")) System.out.println("program ended");
         else System.out.println(Constant.errInvalidCmd);
     }
-
-
-
-
-
-
 
 
     private static Matcher getMatcher(String line, String regex) {
