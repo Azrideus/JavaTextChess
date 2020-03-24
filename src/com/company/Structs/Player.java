@@ -10,18 +10,19 @@ public class Player {
 	private String name;
 	private String pass;
 	private boolean isLogined;
+	private Constant.PlayerColor playerColor;
+
+
 	public Player(String name,String pass,Boolean isLogined) {
 		this.name=name;
 		this.pass=pass;
 		this.isLogined=isLogined;
 		allPlayers.add(this);
 	}
-
-
 	public static void register(String name,String pass) {
 		if(!MatchAcceptableUsername(name))return;
 		else if(!MatchAcceptablePass(pass))return;
-		
+
 		Player player = getPlayerByName(name);
 		if(player!=null) {
 			System.out.println(Constant.errUserAlreadyExist);
@@ -44,8 +45,11 @@ public class Player {
 			return;
 		}
 		else player.isLogined=true;
-		Menu.setMenuSituation(Menu.situation.mainMenu);
 		System.out.println(Constant.successLogin);
+
+		//=============CHANGE SITUATION=====================
+		Menu.setMenuSituation(Menu.situation.mainMenu);
+		//=============CHANGE SITUATION=====================
 	}
 	public static void remove(String name,String pass) {
 		if(!MatchAcceptableUsername(name))return;
@@ -72,7 +76,8 @@ public class Player {
 			return false;
 		}
 		return true;
-	}public static boolean MatchAcceptablePass(String pass) {
+	}
+	public static boolean MatchAcceptablePass(String pass) {
 		if(!pass.matches(Constant.regexAcceptableCharacters)) {
 			System.out.println(Constant.errInvalidPass);
 			return false;
@@ -86,5 +91,11 @@ public class Player {
 		return null;
 	}
 
+	public String getPlayerName() {
+		return name;
+	}
+	public Constant.PlayerColor getPlayerColor() {
+		return playerColor;
+	}
 }
 
