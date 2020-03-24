@@ -11,7 +11,7 @@ public class ChessPiece {
 
 
 
-    public List<ChessPiece> CreatePieces(Player p){
+    public static List<ChessPiece> CreatePieces(Player p){
         List<ChessPiece> AllPieces=new ArrayList<ChessPiece>();
         var PColor=p.getPlayerColor();
 
@@ -63,7 +63,7 @@ public class ChessPiece {
         this.Owner=Owner;
         this.OwnerColor=Owner.getPlayerColor();
         this.mapIcon=mapChar;
-        this.mapIcon=mapIcon;
+        this.mapChar=mapIcon;
         //==========
         this.OriginalX=x;
         this.OriginalY=y;
@@ -71,13 +71,14 @@ public class ChessPiece {
         this.x=y;
         //==========
     }
-    private String mapIcon;
-    private String mapChar;
+    public final int OriginalX,OriginalY;
+    public final String mapIcon;
+    public final String mapChar;
+    public final  String name;
 
-    private String name;
     private Constant.PlayerColor OwnerColor;
     private Player Owner;
 
-    private int x,y;
-    private int OriginalX,OriginalY;
+    public int x,y;
+
 }
