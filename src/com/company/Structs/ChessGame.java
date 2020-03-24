@@ -2,11 +2,12 @@ package com.company.Structs;
 
 import com.company.Classes.Constant;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ChessGame {
     ChessPiece[][] theGamePieces;
-
+    List<ChessMove> MoveHistory;
     Player player1;
     Player player2;
 
@@ -19,7 +20,7 @@ public class ChessGame {
         this.currentMoves=0;
         this.limit=limit;
         theGamePieces=new ChessPiece[9][9];
-        GameMoves=new ArrayList<ChessMove>();
+        MoveHistory=new ArrayList<ChessMove>();
         //=========================================
 
         if(p1.getPlayerColor()==p2.getPlayerColor()){
@@ -57,22 +58,11 @@ public class ChessGame {
             //invalid
             return false;
         }
-        else if(limit<0){
-            System.out.println(Constant.errInvalidLimit);
-            return;
-        }
-        else if(p1.equals(p2)) {
-            System.out.println(Constant.errChooseAnotherPlayer);
-            return;
-        }
-        else if(Player.getPlayerByName(p2)==null) {
-            System.out.println(Constant.errNotExistPlayer);
-            return;
-        }
+
 
         //===================================
         //Make the move
-        GameMoves.add(new ChessMove(theGamePieces,fx,fy,tx,ty));//Save History
+        MoveHistory.add(new ChessMove(theGamePieces,fx,fy,tx,ty));//Save History
 
         theGamePieces[tx][ty]=null;//Capture if any exists
 
@@ -105,5 +95,22 @@ public class ChessGame {
         }
     }
 
-
+    public static void startTheGame(String p1,String p2,int limit){
+        if (!p1.matches(Constant.regexAcceptableCharacters)) {
+            System.out.println(Constant.errInvalidUsername);
+            return;
+        } else if (limit < 0) {
+            System.out.println(Constant.errInvalidLimit);
+            return;
+        } else if (p1.equals(p2)) {
+            System.out.println(Constant.errChooseAnotherPlayer);
+            return;
+        } else if (Player.getPlayerByName(p2) == null) {
+            System.out.println(Constant.errNotExistPlayer);
+            return;
+        } else {
+            ChessGame theGame = new ChessGame(Player.getPlayerByName(p1), Player.getPlayerByName(p2), limit);
+            Menu.setMenuSituation(Menu.situation.gameMenue);
+        }
+    }
 }
