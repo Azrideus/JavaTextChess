@@ -11,7 +11,7 @@ public class Player {
 	private String pass;
 	private boolean isLogined;
 	private Constant.PlayerColor playerColor;
-
+	public static List<ChessPiece> MyChessPieces;
 
 	public Player(String name,String pass,Boolean isLogined) {
 		this.name=name;
