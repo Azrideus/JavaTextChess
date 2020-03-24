@@ -11,11 +11,14 @@ public class ChessPiece {
         List<ChessPiece> AllPieces=new ArrayList<ChessPiece>();
         var PColor=p.getPlayerColor();
 
-        int PawnRow=2;
-        int DefaultRow=1;
+        int PawnRow;
+        int DefaultRow;
         if(PColor==Constant.PlayerColor.White){
             PawnRow=7;
             DefaultRow=8;
+        }else{
+             PawnRow=2;
+             DefaultRow=1;
         }
 
         if(PColor==Constant.PlayerColor.White) {

@@ -43,6 +43,7 @@ public class ChessGame {
             theGamePieces[p.OriginalX][p.OriginalY]=p;
             p.isFirstMove=true;
         }
+        currentPlayer=player1;
         //=========================================
         //PrintBoard(true);
     }
@@ -57,11 +58,15 @@ public class ChessGame {
         ChessPiece fromPiece=theGamePieces[fx][fy];
         ChessPiece toPiece=theGamePieces[tx][ty];
 
+        if(fromPiece.OwnerColor!=currentPlayer.getPlayerColor()){
+            //invalid  , NOT your turn
+            return false;
+        }
         if(fromPiece==null){
             //invalid
             return false;
         }
-        if(fromPiece.OwnerColor==toPiece.OwnerColor){
+        if(toPiece!=null&&fromPiece.OwnerColor==toPiece.OwnerColor){
             //invalid, same color
             return false;
         }
@@ -84,11 +89,11 @@ public class ChessGame {
     }
     public boolean isValidMove(ChessPiece p,ChessPiece tp,int fx,int fy,int tx,int ty){
 
-        if(p.OwnerColor==tp.OwnerColor)return false;
+        if(tp!=null&&p.OwnerColor==tp.OwnerColor)return false;
 
         switch (p.name){
             case "king":
-                return myFunc.Distance(fx,fy,tx,ty) < 1; // if distance is lower than 1
+                return myFunc.Distance(fx,fy,tx,ty) <= 1; // if distance is lower than 1
             case "pawn":
                 if(tp!=null){//Capture
                     //check move
@@ -122,14 +127,20 @@ public class ChessGame {
         if(x>0&&y>0&&x<=8&&y<=8)return theGamePieces[x][y];
         else return null;
     }
-    public void PrintBoard(boolean fancy)
+    public void PrintBoard(boolean fancy,boolean flip)
     {
         boolean IsFirst=true;
         for (int i = 1; i < theGamePieces.length; i++) {
 
             IsFirst=true;
             for (int j = 1; j < theGamePieces[i].length; j++) {
-                ChessPiece p=theGamePieces[i][j];
+                ChessPiece p;
+                if(flip){
+                    p=theGamePieces[9-i][j];
+                }else{
+                    p=theGamePieces[i][j];
+                }
+
 
                 if(IsFirst)IsFirst=false;
                 else System.out.print("|");

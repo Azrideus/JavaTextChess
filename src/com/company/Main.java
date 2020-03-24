@@ -13,17 +13,20 @@ import java.util.regex.Pattern;
 
 public class Main {
 
-    public static ChessGame TheGame;
+    public static ChessGame theGame;
     public static void main(String[] args) {
 
         Scanner in = new Scanner(System.in);
 
-        TheGame=new ChessGame(
+        theGame=new ChessGame(
                 new Player("test1","123",true)
                 ,new Player("test2","123",true),100);
-        TheGame.PrintBoard(true);
-       var p1= TheGame.GetPieceAtPos(1,4);
+
+        theGame.PrintBoard(true,true);
+        var p1= theGame.GetPieceAtPos(1,4);
         System.out.println(p1.mapIcon+" is at "+p1.x+" : "+p1.y);
+        theGame.MakeMove(1,2,3,1);
+        theGame.PrintBoard(true,true);
         while(true) {
             String line=in.nextLine();
             if(Menu.situ== Menu.situation.loginMenu) loginMenu(line);
