@@ -67,14 +67,17 @@ public class ChessGame {
         ChessPiece fromPiece=theGamePieces[fx][fy];
         ChessPiece toPiece=theGamePieces[tx][ty];
 
-        if(fromPiece.OwnerColor!=currentPlayer.getPlayerColor()){
-            //invalid  , NOT your turn
-            return false;
-        }
+
         if(fromPiece==null){
             //invalid
             return false;
         }
+
+        if(fromPiece.OwnerColor!=currentPlayer.getPlayerColor()){
+            //invalid  , NOT your turn
+            return false;
+        }
+
         if(toPiece!=null&&fromPiece.OwnerColor==toPiece.OwnerColor){
             //invalid, same color
             return false;
