@@ -18,7 +18,12 @@ public class Main {
 
         Scanner in = new Scanner(System.in);
 
-
+        TheGame=new ChessGame(
+                new Player("test1","123",true)
+                ,new Player("test2","123",true),100);
+        TheGame.PrintBoard(true);
+       var p1= TheGame.GetPieceAtPos(1,4);
+        System.out.println(p1.mapIcon+" is at "+p1.x+" : "+p1.y);
         while(true) {
             String line=in.nextLine();
             if(Menu.situ== Menu.situation.loginMenu) loginMenu(line);
@@ -29,18 +34,9 @@ public class Main {
 
     private static void mainMenu(String input){
         if(input.matches(Constant.regexNewGame)){
-            StartTheGame();
+
         }
     }
-
-
-
-
-
-
-
-
-
 
 
     private static void loginMenu(String input) {
@@ -64,12 +60,6 @@ public class Main {
         }
         else System.out.println(Constant.errInvalidCmd);
     }
-
-
-
-
-
-
 
 
     private static Matcher getMatcher(String line, String regex) {

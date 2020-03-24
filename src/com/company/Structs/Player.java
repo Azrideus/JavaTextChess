@@ -123,6 +123,7 @@ public class Player {
 
 	public void setDraw(int draw) {
 		this.draw = draw;
+	}
 	public void setPlayerColor(Constant.PlayerColor playerColor) {
 		this.playerColor = playerColor;
 	}
