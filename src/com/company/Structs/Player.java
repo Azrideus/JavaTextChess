@@ -18,79 +18,81 @@ public class Player {
 	private int score;
 	public static List<ChessPiece> MyChessPieces;
 
-	public Player(String name,String pass,Boolean isLogined) {
-		this.name=name;
-		this.pass=pass;
-		this.isLogined=isLogined;
+	public Player(String name, String pass, Boolean isLogined) {
+		this.name = name;
+		this.pass = pass;
+		this.isLogined = isLogined;
 		allPlayers.add(this);
 	}
-	public void logOut(){
+
+	public void logOut() {
 		System.out.println(Constant.successLogOut);
-		this.isLogined=false;
+		this.isLogined = false;
 		//=============CHANGE SITUATION=====================
 		Menu.setMenuSituation(Menu.situation.loginMenu);
 		//=============CHANGE SITUATION=====================
 	}
-	public static void register(String name,String pass) {
-		if(!MatchAcceptableUsername(name))return;
-		else if(!MatchAcceptablePass(pass))return;
+
+	public static void register(String name, String pass) {
+		if (!MatchAcceptableUsername(name)) return;
+		else if (!MatchAcceptablePass(pass)) return;
 
 		Player player = getPlayerByName(name);
-		if(player!=null) {
+		if (player != null) {
 			System.out.println(Constant.errUserAlreadyExist);
 			return;
 		}
-		Player p = new Player(name,pass,false);
+		Player p = new Player(name, pass, false);
 		System.out.println(Constant.successRegister);
 	}
-	public static void login(String name,String pass) {
-		if(!MatchAcceptableUsername(name))return;
-		else if(!MatchAcceptablePass(pass))return;
+
+	public static void login(String name, String pass) {
+		if (!MatchAcceptableUsername(name)) return;
+		else if (!MatchAcceptablePass(pass)) return;
 
 		Player player = getPlayerByName(name);
-		if(player==null) {
+		if (player == null) {
 			System.out.println(Constant.errNotExistPlayer);
 			return;
-		}
-		else if(!player.pass.equals(pass)) {
+		} else if (!player.pass.equals(pass)) {
 			System.out.println(Constant.errincorrectPass);
 			return;
-		}
-		else player.isLogined=true;
+		} else player.isLogined = true;
 		System.out.println(Constant.successLogin);
 		Main.p1 = player;
 		//=============CHANGE SITUATION=====================
 		Menu.setMenuSituation(Menu.situation.mainMenu);
 		//=============CHANGE SITUATION=====================
 	}
-	public static void remove(String name,String pass) {
-		if(!MatchAcceptableUsername(name))return;
-		else if(!MatchAcceptablePass(pass))return;
+
+	public static void remove(String name, String pass) {
+		if (!MatchAcceptableUsername(name)) return;
+		else if (!MatchAcceptablePass(pass)) return;
 
 		Player player = getPlayerByName(name);
-		if(player==null) {
+		if (player == null) {
 			System.out.println(Constant.errNotExistPlayer);
 			return;
-		}
-		else if(!player.pass.equals(pass)) {
+		} else if (!player.pass.equals(pass)) {
 			System.out.println(Constant.errincorrectPass);
 			return;
 		}
-		for(int i=0;i<allPlayers.size();i++) {
-			if(name.equals(allPlayers.get(i).name)) allPlayers.remove(i);
+		for (int i = 0; i < allPlayers.size(); i++) {
+			if (name.equals(allPlayers.get(i).name)) allPlayers.remove(i);
 		}
-		System.out.println(Constant.successRemove.replace("*",name ));
+		System.out.println(Constant.successRemove.replace("*", name));
 	}
 
 	private static boolean MatchAcceptableUsername(String name) {
-		if(!name.matches(Constant.regexAcceptableCharacters)) {
+		if (!name.matches(Constant.regexAcceptableCharacters)) {
 			System.out.println(Constant.errInvalidUsername);
 			return false;
 		}
 		return true;
 	}
+
 	private static boolean MatchAcceptablePass(String pass) {
-		if(!pass.matches(Constant.regexAcceptableCharacters)) {
+		if (!pass.matches(Constant.regexAcceptableCharacters)) {
 			System.out.println(Constant.errInvalidPass);
 			return false;
 		}
@@ -98,14 +100,15 @@ public class Player {
 	}
 
 	public static Player getPlayerByName(String name) {
-		for(int i=0;i<allPlayers.size();i++) 
-			if(allPlayers.get(i).name.equals(name)) return allPlayers.get(i);
+		for (int i = 0; i < allPlayers.size(); i++)
+			if (allPlayers.get(i).name.equals(name)) return allPlayers.get(i);
 		return null;
 	}
 
 	public String getPlayerName() {
 		return name;
 	}
+
 	public Constant.PlayerColor getPlayerColor() {
 		return playerColor;
 	}
@@ -133,10 +136,11 @@ public class Player {
 	public void setDraw(int draw) {
 		this.draw = draw;
 	}
+
 	public void setPlayerColor(Constant.PlayerColor playerColor) {
 		this.playerColor = playerColor;
 	}
-}
+
 
 	public int getScore() {
 		return score;
@@ -146,3 +150,4 @@ public class Player {
 		this.score = score;
 	}
 
+}
