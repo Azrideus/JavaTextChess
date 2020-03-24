@@ -6,13 +6,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Player {
-	static List<Player> allPlayers = new ArrayList<Player>();
+	public static List<Player> allPlayers = new ArrayList<Player>();
 	private String name;
 	private String pass;
 	private boolean isLogined;
 	private Constant.PlayerColor playerColor;
-
-
+	private int win;
+	private int lose;
+	private int draw;
 	public Player(String name,String pass,Boolean isLogined) {
 		this.name=name;
 		this.pass=pass;
@@ -96,6 +97,30 @@ public class Player {
 	}
 	public Constant.PlayerColor getPlayerColor() {
 		return playerColor;
+	}
+
+	public int getWin() {
+		return win;
+	}
+
+	public void setWin(int win) {
+		this.win = win;
+	}
+
+	public int getLose() {
+		return lose;
+	}
+
+	public void setLose(int lose) {
+		this.lose = lose;
+	}
+
+	public int getDraw() {
+		return draw;
+	}
+
+	public void setDraw(int draw) {
+		this.draw = draw;
 	}
 }
 

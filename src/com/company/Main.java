@@ -1,6 +1,7 @@
 package com.company;
 
 import com.company.Classes.Constant;
+import com.company.Classes.myFunc;
 import com.company.Structs.Menu;
 import com.company.Structs.Player;
 
@@ -23,6 +24,9 @@ public class Main {
             if(Menu.situ== Menu.situation.loginMenu) loginMenu(line);
         }
     }
+    private static void mainMenu(String input){
+        if(input.matches())
+    }
     private static void loginMenu(String input) {
         if(input.matches(Constant.regexRegister)) {
             Matcher matcher = getMatcher(input,Constant.regexRegister);
@@ -35,6 +39,9 @@ public class Main {
         else if(input.matches(Constant.regexRemove)) {
             Matcher matcher = getMatcher(input,Constant.regexRemove);
             Player.remove(matcher.group(1),matcher.group(2));
+        }
+        else if(input.equals("list_users")) {
+            myFunc.printPlayerNamesByAlphabeticallyOrder(Player.allPlayers);
         }
         else if(input.equals("help")) {
             System.out.println(Menu.help);

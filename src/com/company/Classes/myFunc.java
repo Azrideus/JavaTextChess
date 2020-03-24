@@ -12,11 +12,22 @@ public class myFunc {
         }
         return null;
     }
-    public static List<Player> orderAlphabetically(List<Player> players){
+    private static List<Player> playersOrderAlphabetically(List<Player> players){
         for (int i=0;i<players.size();i++){
-            for(int j=0;j<players.size()-1;j++){
-                if(players.get(j))
+            for(int j=0;j<players.size()-1-i;j++){
+                if(players.get(j).getPlayerName().compareTo(players.get(j+1).getPlayerName())>0){
+                    Player player = players.get(j);
+                    players.set(j,players.get(j+1));
+                    players.set(j+1,player);
+                }
             }
+        }
+        return players;
+    }
+    public static void printPlayerNamesByAlphabeticallyOrder(List<Player> players){
+        List<Player> p = playersOrderAlphabetically(players);
+        for(int i=0;i<players.size();i++){
+            System.out.println(players.get(i).getPlayerName());
         }
     }
 }

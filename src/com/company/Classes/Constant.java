@@ -10,7 +10,7 @@ public class Constant {
 	public  static String regexRegister="register (.*?) (.*?)$";
 	public  static String regexLogin="login (.*?) (.*?)$";
 	public  static String regexRemove="remove (.*?) (.*?)$";
-
+	public  static String regexNewGame="new_game (.*?) (.*?)$";
 	public  static String errNotExistPlayer="no user exists with this username";
 	public  static String errInvalidUsername="username format is invalid";
 	public  static String errInvalidPass="password format is invalid";
