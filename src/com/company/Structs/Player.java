@@ -97,5 +97,9 @@ public class Player {
 	public Constant.PlayerColor getPlayerColor() {
 		return playerColor;
 	}
+
+	public void setPlayerColor(Constant.PlayerColor playerColor) {
+		this.playerColor = playerColor;
+	}
 }
 
