@@ -14,6 +14,8 @@ public class Player {
 	private int win;
 	private int lose;
 	private int draw;
+	public static List<ChessPiece> MyChessPieces;
+
 	public Player(String name,String pass,Boolean isLogined) {
 		this.name=name;
 		this.pass=pass;
