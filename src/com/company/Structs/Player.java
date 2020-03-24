@@ -3,18 +3,21 @@ package com.company.Structs;
 import com.company.Classes.Constant;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Player {
-	static ArrayList<Player> allPlayers = new ArrayList<Player>();
-	String name;
-	String pass;
-	boolean isLogined;
+	static List<Player> allPlayers = new ArrayList<Player>();
+	private String name;
+	private String pass;
+	private boolean isLogined;
 	public Player(String name,String pass,Boolean isLogined) {
 		this.name=name;
 		this.pass=pass;
 		this.isLogined=isLogined;
 		allPlayers.add(this);
 	}
+
+
 	public static void register(String name,String pass) {
 		if(!name.matches(Constant.regexAcceptableCharacters)) {
 			System.out.println(Constant.errInvalidUsername);
@@ -56,7 +59,6 @@ public class Player {
 		System.out.println(Constant.successLogin);
 	}
 	public static void remove(String name,String pass) {
-		
 		if(!name.matches(Constant.regexAcceptableCharacters)) {
 			System.out.println(Constant.errInvalidUsername);
 			return;
@@ -79,10 +81,20 @@ public class Player {
 		}
 		System.out.println(Constant.successRemove.replace("*",name ));
 	}
+
+	public static boolean MatchAcceptableUsername(String name) {
+		if(!name.matches(Constant.regexAcceptableCharacters)) {
+			System.out.println(Constant.errInvalidUsername);
+			return false;
+		}
+		return true;
+	}
+
 	public static Player getPlayerByName(String name) {
 		for(int i=0;i<allPlayers.size();i++) 
 			if(allPlayers.get(i).name.equals(name)) return allPlayers.get(i);
 		return null;
-}
+	}
+
 }
 
