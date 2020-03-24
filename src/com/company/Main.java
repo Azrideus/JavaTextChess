@@ -25,11 +25,7 @@ public class Main {
 
 
     }
-    private static void StartTheGame() {
-        TheGame=new ChessGame(/*all players*/);
 
-
-    }
 
 
 
