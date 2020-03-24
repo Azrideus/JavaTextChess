@@ -12,4 +12,11 @@ public class myFunc {
         }
         return null;
     }
+    public static List<Player> orderAlphabetically(List<Player> players){
+        for (int i=0;i<players.size();i++){
+            for(int j=0;j<players.size()-1;j++){
+                if(players.get(j))
+            }
+        }
+    }
 }

@@ -36,6 +36,10 @@ public class Main {
             Matcher matcher = getMatcher(input,Constant.regexRemove);
             Player.remove(matcher.group(1),matcher.group(2));
         }
+        else if(input.equals("help")) {
+            System.out.println(Menu.help);
+        }
         else System.out.println(Constant.errInvalidCmd);
     }
+
 }
