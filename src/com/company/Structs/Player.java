@@ -73,14 +73,14 @@ public class Player {
 		System.out.println(Constant.successRemove.replace("*",name ));
 	}
 
-	public static boolean MatchAcceptableUsername(String name) {
+	private static boolean MatchAcceptableUsername(String name) {
 		if(!name.matches(Constant.regexAcceptableCharacters)) {
 			System.out.println(Constant.errInvalidUsername);
 			return false;
 		}
 		return true;
 	}
-	public static boolean MatchAcceptablePass(String pass) {
+	private static boolean MatchAcceptablePass(String pass) {
 		if(!pass.matches(Constant.regexAcceptableCharacters)) {
 			System.out.println(Constant.errInvalidPass);
 			return false;

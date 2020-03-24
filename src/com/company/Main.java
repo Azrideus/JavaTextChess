@@ -26,13 +26,11 @@ public class Main {
 
 
     }
-    private static void StartTheGame() {
-        TheGame=new ChessGame(/*all players*/);
 
-
-    }
     private static void mainMenu(String input){
-        if(input.matches())
+        if(input.matches(Constant.regexNewGame)){
+            StartTheGame();
+        }
     }
 
 
