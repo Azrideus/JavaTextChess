@@ -93,6 +93,10 @@ public class ChessGame {
             //invalid same color
             return false;
         }
+        if(fromPiece.Owner!=currentPlayer){
+            //invalid , not my piece
+            return false;
+        }
 
         if(!IsValidMove(fromPiece,toPiece,fx,fy,tx,ty)){
             //Cant make that move
