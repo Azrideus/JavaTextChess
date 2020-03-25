@@ -128,12 +128,70 @@ public class ChessGame {
             case "king":
                 return myFunc.Distance(fx,fy,tx,ty)<=1;
             case "pawn":
-
-                break;
+                if(fromPiece.isFirstMove&&tx-fx==2&&ty==tx) return true;
+                else if(ty==fy&&tx-ty==1) return true;
+                else if(toPiece!=null && toPiece.Owner!=this.currentPlayer && tx-fx==1 && Math.abs(ty-fy)==1) return true;
+                else return false;
+            case "knight":
+                if((Math.abs(tx-fx)==2&& Math.abs(ty-fy)==1) || (Math.abs(ty-tx)==1 && Math.abs(ty-fy)==2)) return true;
+                else return false;
+            case "rook":
+                if(ty==fy || tx==fx){
+                    if(isFreeSpace(fx,fy,tx,ty)) return true;
+                }
+                return false;
+            case "bishop":
+                if(Math.abs(tx-fx)==Math.abs(ty-fy) && isFreeSpace(fx, fy, tx, ty)) return true;
+                else return false;
+            case "queen":
+                if(ty==fy || tx==fx){
+                    if(isFreeSpace(fx,fy,tx,ty)) return true;
+                }
+                else if(Math.abs(tx-fx)==Math.abs(ty-fy) && isFreeSpace(fx, fy, tx, ty)) return true;
+                else return false;
         }
         return true;
     }
-
+    private boolean isFreeSpace(int fx,int fy,int tx,int ty){
+        if(fx==tx){
+            if(ty<fy){
+                int tmp=fy;
+                fy=ty;
+                ty=tmp;
+            }
+            for(int i=fy+1;i<ty;i++){
+                if (theGamePieces[fx][i]!=null) return false;
+            }
+            return true;
+        }
+        else if(fy==ty){
+            if(tx<fx){
+                int tmp=fx;
+                fx=tx;
+                tx=tmp;
+            }
+            for(int i=fx+1;i<tx;i++){
+                if (theGamePieces[fx][i]!=null) return false;
+            }
+            return true;
+        }
+        else if(Math.abs(tx-fx)==Math.abs(ty-fy)){
+            if(tx<fx){
+                int tmp=fx;
+                fx=tx;
+                tx=tmp;
+            }
+            if(ty<fy){
+                int tmp=fy;
+                fy=ty;
+                ty=tmp;
+            }
+            for(int i=1;i<ty-fy;i++)
+                if (theGamePieces[fx+i][fy+i]!=null) return false;
+                return true;
+        }
+        else return false;
+    }
     public ChessPiece getPieceByPosition(int fx,int fy){
         if(fx<1||fy<1||fx>8||fy>8){
             return null;
