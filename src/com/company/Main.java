@@ -19,17 +19,18 @@ public class Main {
         Scanner in = new Scanner(System.in);
 
 
-        theGame=new ChessGame(new Player("name1","pass1",true)
-        ,new Player("name2","pass2",true)
-                ,100
-        );
-        theGame.PrintBoard(true,true);
-        ChessPiece p1=theGame.getPieceByPosition(1,1);
-        System.out.println(p1.mapIcon+" is at "+p1.x+" : "+p1.y );
+
+        //System.out.println(p1.mapIcon+" is at "+p1.x+" : "+p1.y );
         while(true) {
             String line=in.nextLine();
-            if(Menu.situ== Menu.situation.loginMenu) loginMenu(line);
-            else mainMenu(line);
+            try{
+                if(Menu.situ== Menu.situation.loginMenu) loginMenu(line);
+                else if(Menu.situ==Menu.situation.gameMenu)gameMenu(line);
+                else mainMenu(line);
+            }catch (Exception ex){
+                ex.printStackTrace();
+                System.out.println(Constant.errInvalidCmd);
+            }
         }
 
 
@@ -38,31 +39,31 @@ public class Main {
     private static void mainMenu(String input){
         if(input.matches(Constant.regexNewGame)){
             Matcher matcher = getMatcher(input,Constant.regexNewGame);
-            ChessGame.startTheGame(matcher.group(1),p1.getPlayerName(),Integer.valueOf(matcher.group(2)));
+            ChessGame.startTheGame(p1.getPlayerName(),matcher.group(1),Integer.valueOf(matcher.group(2)));
         }
-        else if(input.equals("list_users")) {
-            myFunc.printPlayerNamesByOrder(Player.allPlayers,false);
-        }
-        else if(input.equals("help")) {
-            System.out.println(Menu.help);
-        }
-        else if(input.equals("scoreboard")){
-            myFunc.printPlayerNamesByOrder(Player.allPlayers,true);
-        }
+        else if(input.equals("list_users"))  myFunc.printPlayerNamesByOrder(Player.allPlayers,false);
+        else if(input.equals("help")) System.out.println(Menu.help);
+        else if(input.equals("scoreboard")) myFunc.printPlayerNamesByOrder(Player.allPlayers,true);
         else if(input.equals("logout")) p1.logOut();
         else System.out.println(Constant.errInvalidCmd);
     }
+    private static void gameMenu(String input){
+        if(input.matches(Constant.regexSelect)){
+            Matcher matcher = getMatcher(input,Constant.regexSelect);
+            int x=Integer.parseInt(matcher.group(1));
+            int y=Integer.parseInt(matcher.group(2));
+            theGame.currentPlayerSelect(x,y);
+        }else if(input.matches(Constant.regexMove)){
+            Matcher matcher = getMatcher(input,Constant.regexMove);
 
-
-
-
-
-
-
-
-
-
-
+            int tx=Integer.parseInt(matcher.group(1));
+            int ty=Integer.parseInt(matcher.group(2));
+            theGame.MakeMove(tx,ty);
+        }
+        else if(input.equals("deselect"))theGame.currentPlayerDeselect();
+        else if(input.equals("show_board"))theGame.PrintBoard(false,true);
+        else System.out.println(Constant.errInvalidCmd);
+    }
     private static void loginMenu(String input) {
         if(input.matches(Constant.regexRegister)) {
             Matcher matcher = getMatcher(input,Constant.regexRegister);
@@ -81,6 +82,14 @@ public class Main {
         }
         else if(input.equals("help")) {
             System.out.println(Menu.help);
+        }
+        else if(input.equals("auto")) {
+            System.out.println("Auto register/login/new game");
+            Player.register("A","A");
+            Player.register("B","B");
+            Player.login("A","A");
+            ChessGame.startTheGame(p1.getPlayerName(),"B",100);
+            theGame.PrintBoard(false,true);
         }
         else if(input.equals("exit")) System.out.println("program ended");
         else System.out.println(Constant.errInvalidCmd);

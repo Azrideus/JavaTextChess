@@ -4,13 +4,17 @@ public class Constant {
 	public enum PlayerColor{
 		White,Black
 	}
-	public static boolean _isDebug;
+	public static boolean _isDebug=true;
+
 
 	public  static String regexAcceptableCharacters="[a-zA-Z0-9]*";
 	public  static String regexRegister="register (.*?) (.*?)$";
 	public  static String regexLogin="login (.*?) (.*?)$";
 	public  static String regexRemove="remove (.*?) (.*?)$";
 	public  static String regexNewGame="new_game (.*?) (.*?)$";
+	public  static String regexSelect="select (.*?) (.*?)$";
+	public  static String regexMove="move (.*?) (.*?)$";
+
 	public  static String errNotExistPlayer="no user exists with this username";
 	public  static String errInvalidLimit="number should be positive to have a limit or 0 for no limit";
 	public  static String errChooseAnotherPlayer="you must choose another player to start a game";
@@ -29,7 +33,7 @@ public class Constant {
 	public  static String errAlreadyUsedAllUndo="you cannot undo anymore";
 	public  static String errHasNotMovedBeforeUndo="you must move before undo";
 	public  static String errAlreadyUsedThisTurnUndo="you have used your undo for this turn";
-
+	public  static String errUnknown="unknown error";
 
 	public  static String successRegister="register successful";
 	public  static String successLogin="login successful";

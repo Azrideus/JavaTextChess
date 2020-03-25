@@ -2,6 +2,7 @@ package com.company.Structs;
 
 import com.company.Classes.Constant;
 import com.company.Classes.myFunc;
+import com.company.Main;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,14 +64,21 @@ public class ChessGame {
         else if(pIndex==2)currentPlayer=player2;
         if(currentPlayer!=null){
             if(Constant._isDebug){
-                System.out.println("[ Its "+currentPlayer.getPlayerName()+"'s turn ! ]");
+                System.out.println(" >> Its "+currentPlayer.getPlayerName()+"'s turn ! "
+                +"\n    > playerColor : "+currentPlayer.getPlayerColor()
+                //+"\n    > player : "+currentPlayer.get
+                );
             }
             currentPlayer.selectedPiece=null;
             currentPlayer.hasMoved=false;
         }
     }
 
-
+    public boolean MakeMove(int tx,int ty) {
+        int fx=currentPlayer.selectedPiece.x;
+        int fy=currentPlayer.selectedPiece.y;
+        return MakeMove(fx,fy,tx,ty);
+    }
     public boolean MakeMove(int fx,int fy,int tx,int ty) {
         if (fx < 1 || fy < 1 || tx < 1 || ty < 1
                 || fx > 8 || fy > 8 || tx > 8 || ty > 8) {
@@ -140,21 +148,47 @@ public class ChessGame {
         return theGamePieces[fx][fy];
     }
     public boolean currentPlayerSelect(int fx,int fy){
-          ChessPiece sp=getPieceByPosition(fx,fy);
-          if(sp==null){
-              //ERROR CANT SELECT THIS
-              return false;
-          }
-          if(currentPlayer==null){
-              //ERROR Current player is null ! (Should never happen)
-              return false;
-          }
-          if (sp.Owner != currentPlayer) {
-                  //invalid , not my piece
-                  return false;
-          }
-          currentPlayer.selectedPiece=sp;
+            if(fx<1||fy<1||fx>8||fy>8){
+                System.out.println(Constant.errPieceOutOfRange);
+                return false;
+            }
+            ChessPiece sp=getPieceByPosition(fx,fy);
+            if(sp==null){
+                System.out.println(Constant.errNoPiece);
+                return false;
+            }
+            if(currentPlayer==null){
+                //ERROR Current player is null ! (Should never happen)
+                System.out.println(Constant.errUnknown);
+                return false;
+            }
+            if (sp.Owner != currentPlayer) {
+                    //invalid , not my piece
+                    System.out.println(Constant.errIsYourEnemyPiece);
+                    if(Constant._isDebug){
+                        System.out.println(" [deubg] "+sp.mapIcon+" is a piece of "+sp.Owner.getPlayerName()+" : "+sp.OwnerColor);
+                    }
+                    return false;
+            }
+
+            currentPlayer.selectedPiece=sp;
+
+            if(Constant._isDebug){
+                System.out.println(Constant.successSelected+" "+sp.mapIcon+" ");
+            }
+            else  System.out.println(Constant.successSelected);
+
           return true;
+    }
+    public boolean currentPlayerDeselect(){
+
+        if(currentPlayer.selectedPiece==null){
+            System.out.println(Constant.errNoPiece);
+            return false;
+        }
+        currentPlayer.selectedPiece=null;
+        System.out.println(Constant.successDeselected);
+        return true;
     }
 
 
@@ -212,8 +246,8 @@ public class ChessGame {
                 System.out.println(Constant.errNotExistPlayer);
                 return;
             }else{
-                ChessGame theGame = new ChessGame(p1c, p2c, limit);
-                Menu.setMenuSituation(Menu.situation.gameMenue);
+                Main.theGame = new ChessGame(p1c, p2c, limit);
+                Menu.setMenuSituation(Menu.situation.gameMenu);
                 System.out.println(Constant.successNewGame
                         .replace("[first]",p1)
                         .replace("[second]",p2)
