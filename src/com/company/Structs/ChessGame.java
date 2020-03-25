@@ -80,14 +80,20 @@ public class ChessGame {
         return MakeMove(fx,fy,tx,ty);
     }
     public boolean MakeMove(int fx,int fy,int tx,int ty) {
-        if(currentPlayer.selectedPiece == null) {
-            System.out.println(Constant.errHasNotSelected);
+        if(currentPlayer.hasMoved){
+            System.out.println(Constant.errAlreadyMoved);
+            return false;
         }
         if (fx < 1 || fy < 1 || tx < 1 || ty < 1
                 || fx > 8 || fy > 8 || tx > 8 || ty > 8) {
             System.out.println(Constant.errPieceOutOfRange);
             return false;
         }
+        if(currentPlayer.selectedPiece == null) {
+            System.out.println(Constant.errHasNotSelected);
+            return false;
+        }
+
         ChessPiece fromPiece=theGamePieces[fx][fy];
         ChessPiece toPiece=theGamePieces[tx][ty];
         if (fx == tx && fy == ty) {
@@ -175,15 +181,16 @@ public class ChessGame {
                 return false;
             }
             ChessPiece sp=getPieceByPosition(fx,fy);
+        if(currentPlayer==null){
+            //ERROR Current player is null ! (Should never happen)
+            System.out.println(Constant.errUnknown);
+            return false;
+        }
             if(sp==null){
                 System.out.println(Constant.errNoPiece);
                 return false;
             }
-            if(currentPlayer==null){
-                //ERROR Current player is null ! (Should never happen)
-                System.out.println(Constant.errUnknown);
-                return false;
-            }
+
             if (sp.Owner != currentPlayer) {
                     //invalid , not my piece
                     System.out.println(Constant.errIsYourEnemyPiece);
