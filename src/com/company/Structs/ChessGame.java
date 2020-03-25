@@ -77,12 +77,12 @@ public class ChessGame {
             System.out.println(Constant.errPieceOutOfRange);
             return false;
         }
+        ChessPiece fromPiece=theGamePieces[fx][fy];
+        ChessPiece toPiece=theGamePieces[tx][ty];
         if (fx == tx && fy == ty) {
             //invalid same pos
             return false;
         }
-        ChessPiece fromPiece = theGamePieces[fx][fy];
-        ChessPiece toPiece = theGamePieces[tx][ty];
 
 
         if (fromPiece == null) {
@@ -103,7 +103,7 @@ public class ChessGame {
         }
 
         if(!IsValidMove(fromPiece,toPiece,fx,fy,tx,ty)){
-            //Cant make that move
+            System.out.println(Constant.errCantMoveThere);
             return false;
         }
 
@@ -126,6 +126,9 @@ public class ChessGame {
         switch (fromPiece.name){
             case "king":
                 return myFunc.Distance(fx,fy,tx,ty)<=1;
+            case "pawn":
+
+                break;
         }
         return true;
     }
