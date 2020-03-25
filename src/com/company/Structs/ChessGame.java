@@ -9,7 +9,8 @@ import java.util.List;
 
 public class ChessGame {
     ChessPiece[][] theGamePieces;
-    public static List<ChessMove> MoveHistory;
+    public List<ChessMove> MoveHistory;
+    public List<ChessMove> KillHistory;
     ChessPiece[][] theGamePiecesBeforeMove;
 
 
@@ -237,6 +238,8 @@ public class ChessGame {
         System.out.println(Constant.successTurnCompleted);
 
         MoveHistory.add(LastMove);//Add Move History
+        if(LastMove.toPiece!=null)KillHistory.add(LastMove);
+
         SwitchPlayer(0);//Switch to next player
         return true;
     }
