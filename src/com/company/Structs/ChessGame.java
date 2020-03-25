@@ -71,31 +71,36 @@ public class ChessGame {
     }
 
 
-    public boolean MakeMove(int fx,int fy,int tx,int ty){
-        if(fx<1||fy<1||tx<1||ty<1
-                ||fx>8||fy>8||tx>8||ty>8){
-            //invalid
+    public boolean MakeMove(int fx,int fy,int tx,int ty) {
+        if (fx < 1 || fy < 1 || tx < 1 || ty < 1
+                || fx > 8 || fy > 8 || tx > 8 || ty > 8) {
+            System.out.println(Constant.errPieceOutOfRange);
             return false;
         }
-        if(fx==tx&&fy==ty){
+        if (fx == tx && fy == ty) {
             //invalid same pos
             return false;
         }
-        ChessPiece fromPiece=theGamePieces[fx][fy];
-        ChessPiece toPiece=theGamePieces[tx][ty];
+        ChessPiece fromPiece = theGamePieces[fx][fy];
+        ChessPiece toPiece = theGamePieces[tx][ty];
 
 
-        if(fromPiece==null){
-            //invalid
+        if (fromPiece == null) {
+            System.out.println(Constant.errNoPiece);
             return false;
         }
-        if(toPiece!=null&&fromPiece.OwnerColor==toPiece.OwnerColor){
-            //invalid same color
+        if (toPiece != null && fromPiece.OwnerColor == toPiece.OwnerColor) {
+            System.out.println(Constant.errChooseAnotherPlayer);
             return false;
         }
-        if(fromPiece.Owner!=currentPlayer){
+
+        if (fromPiece.Owner != currentPlayer) {
             //invalid , not my piece
             return false;
+        }
+
+        if (fromPiece == toPiece){
+            System.out.println(Constant.errCantMoveThere);
         }
 
         if(!IsValidMove(fromPiece,toPiece,fx,fy,tx,ty)){
@@ -127,7 +132,9 @@ public class ChessGame {
     }
 
     public ChessPiece getPieceByPosition(int fx,int fy){
-        if(fx<1||fy<1||fx>8||fy>8)return null;
+        if(fx<1||fy<1||fx>8||fy>8){
+            return null;
+        }
         return theGamePieces[fx][fy];
     }
     public boolean currentPlayerSelect(int fx,int fy){
@@ -139,6 +146,10 @@ public class ChessGame {
           if(currentPlayer==null){
               //ERROR Current player is null ! (Should never happen)
               return false;
+          }
+          if (sp.Owner != currentPlayer) {
+                  //invalid , not my piece
+                  return false;
           }
           currentPlayer.selectedPiece=sp;
           return true;
