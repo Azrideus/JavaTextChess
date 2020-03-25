@@ -9,8 +9,8 @@ import java.util.List;
 
 public class ChessGame {
     ChessPiece[][] theGamePieces;
-    public List<ChessMove> MoveHistory;
-    public List<ChessMove> KillHistory;
+    public List<ChessMove> moveHistory;
+    public List<ChessMove> killHistory;
     ChessPiece[][] theGamePiecesBeforeMove;
 
 
@@ -32,7 +32,7 @@ public class ChessGame {
 
         theGamePieces=new ChessPiece[9][9];
         theGamePiecesBeforeMove=new ChessPiece[9][9];
-        MoveHistory=new ArrayList<ChessMove>();
+        moveHistory=new ArrayList<ChessMove>();
         //=========================================
 
         if(p1.getPlayerColor()==p2.getPlayerColor()){
@@ -160,7 +160,7 @@ public class ChessGame {
         //Make the move
         if(toPiece==null)System.out.println(Constant.successMoved);
         else System.out.println(Constant.successMovedAndDestroyed);
-        LastMove=new ChessMove(MoveHistory.size(),theGamePieces,fx,fy,tx,ty);//Save History
+        LastMove=new ChessMove(moveHistory.size(),theGamePieces,fx,fy,tx,ty);//Save History
 
 
         //-------------
@@ -237,8 +237,8 @@ public class ChessGame {
         }
         System.out.println(Constant.successTurnCompleted);
 
-        MoveHistory.add(LastMove);//Add Move History
-        if(LastMove.toPiece!=null)KillHistory.add(LastMove);
+        moveHistory.add(LastMove);//Add Move His tory
+        if(LastMove.toPiece!=null)killHistory.add(LastMove);
 
         SwitchPlayer(0);//Switch to next player
         return true;
