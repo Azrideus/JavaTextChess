@@ -18,6 +18,7 @@ public class Constant {
 	public  static String errInvalidPass="password format is invalid";
 	public  static String errUserAlreadyExist="a user exists with this username";
 	public  static String errincorrectPass="incorrect password";
+	public  static String errInvalidCmd="invalid command";
 	public  static String errAlreadyMoved="already moved";
 	public  static String errHasNotSelected="no piece is selected";
 	public  static String errNoPiece="no piece on this spot";
@@ -25,9 +26,9 @@ public class Constant {
 	public  static String errCantMoveThere="cannot move to the spot";
 	public  static String errPieceOutOfRange="wrong coordination";
 	public  static String errHasNotMoved="you must move then proceed to next turn";
-	public  static String errAlreadyUsedUndo="you cannot undo anymore";
+	public  static String errAlreadyUsedAllUndo="you cannot undo anymore";
 	public  static String errHasNotMovedBeforeUndo="you must move before undo";
-	public  static String errAlreadyUsedUndo="you cannot undo anymore";
+	public  static String errAlreadyUsedThisTurnUndo="you have used your undo for this turn";
 
 
 	public  static String successRegister="register successful";
@@ -35,5 +36,9 @@ public class Constant {
 	public  static String successRemove="removed * successfully";
 	public  static String successLogOut="logout successful";
 	public  static String successNewGame="new game started successfully between [first] and [second] with limit [limit]";
-	public  static String errInvalidCmd="invalid command";
+	public  static String successSelected="selected";
+	public  static String successDeselected="deselected";
+	public  static String successMovedAndDestroyed="rival piece destroyed";
+	public  static String successMoved="moved";
+	public  static String successUndo="undo completed";
 }
