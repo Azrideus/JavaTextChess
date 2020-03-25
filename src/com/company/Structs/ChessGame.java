@@ -80,6 +80,9 @@ public class ChessGame {
         return MakeMove(fx,fy,tx,ty);
     }
     public boolean MakeMove(int fx,int fy,int tx,int ty) {
+        if(currentPlayer.selectedPiece == null) {
+            System.out.println(Constant.errHasNotSelected);
+        }
         if (fx < 1 || fy < 1 || tx < 1 || ty < 1
                 || fx > 8 || fy > 8 || tx > 8 || ty > 8) {
             System.out.println(Constant.errPieceOutOfRange);
@@ -119,6 +122,8 @@ public class ChessGame {
 
         //===================================
         //Make the move
+        if(toPiece==null)System.out.println(Constant.successMoved);
+        else System.out.println(Constant.successMovedAndDestroyed);
         MoveHistory.add(new ChessMove(theGamePieces,fx,fy,tx,ty));//Save History
 
         theGamePieces[tx][ty]=null;//Capture if any exists
@@ -126,6 +131,7 @@ public class ChessGame {
         theGamePieces[tx][ty]=fromPiece;//move
         theGamePieces[fx][fy]=null;//Set old to null
         fromPiece.isFirstMove=false;
+
         return true;
     }
     public boolean IsValidMove(ChessPiece fromPiece,ChessPiece toPiece,int fx,int fy,int tx,int ty){
@@ -241,7 +247,7 @@ public class ChessGame {
     public boolean currentPlayerDeselect(){
 
         if(currentPlayer.selectedPiece==null){
-            System.out.println(Constant.errNoPiece);
+            System.out.println(Constant.errHasNotSelected);
             return false;
         }
         currentPlayer.selectedPiece=null;
