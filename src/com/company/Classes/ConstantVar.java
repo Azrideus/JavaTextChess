@@ -1,10 +1,10 @@
 package com.company.Classes;
 
-public class Constant {
+public class ConstantVar {
 	public enum PlayerColor{
 		White,Black
 	}
-	public static boolean _isDebug=true;
+	public static boolean _isDebug=false;
 
 
 	public  static String regexAcceptableCharacters="[a-zA-Z0-9]*";
@@ -12,8 +12,9 @@ public class Constant {
 	public  static String regexLogin="login (.*?) (.*?)$";
 	public  static String regexRemove="remove (.*?) (.*?)$";
 	public  static String regexNewGame="new_game (.*?) (.*?)$";
-	public  static String regexSelect="select (.*?), (.*?)$";
-	public  static String regexMove="move (.*?), (.*?)$";
+	public  static String regexSelect="select (.*?),(.*?)$";
+	public  static String regexMove="move (.*?),(.*?)$";
+	public  static String regexSelectMove="sm (.*?),(.*?) (.*?),(.*?)$";
 
 	public  static String errNotExistPlayer="no user exists with this username";
 	public  static String errInvalidLimit="number should be positive to have a limit or 0 for no limit";

@@ -1,6 +1,6 @@
 package com.company.Structs;
 
-import com.company.Classes.Constant;
+import com.company.Classes.ConstantVar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +17,7 @@ public class ChessPiece  implements Cloneable {
 
         int PawnRow;
         int DefaultRow;
-        if(PColor==Constant.PlayerColor.White){
+        if(PColor== ConstantVar.PlayerColor.White){
             PawnRow=2;
             DefaultRow=1;
         }else{
@@ -25,7 +25,7 @@ public class ChessPiece  implements Cloneable {
             DefaultRow=8;
         }
 
-        if(PColor==Constant.PlayerColor.Black) {
+        if(PColor== ConstantVar.PlayerColor.Black) {
 
             for (int i = 1; i <= 8; i++) {
                 AllPieces.add(new ChessPiece(p,"pawn","Pb","♙",PawnRow,i));
@@ -77,7 +77,7 @@ public class ChessPiece  implements Cloneable {
     public final String mapIcon;
     public final String mapChar;
     public final String name;
-    public final Constant.PlayerColor OwnerColor;
+    public final ConstantVar.PlayerColor OwnerColor;
     public final Player Owner;
 
     public boolean isFirstMove;

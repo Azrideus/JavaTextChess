@@ -1,6 +1,7 @@
 package com.company.Structs;
 
-import com.company.Classes.Constant;
+import com.company.Classes.ConstantVar;
+import com.company.Classes.PrintFormatted;
 import com.company.Classes.myFunc;
 import com.company.Main;
 
@@ -33,12 +34,13 @@ public class ChessGame {
         theGamePieces=new ChessPiece[9][9];
         theGamePiecesBeforeMove=new ChessPiece[9][9];
         moveHistory=new ArrayList<ChessHistory>();
+        killHistory=new ArrayList<ChessHistory>();
         //=========================================
 
         if(p1.getPlayerColor()==p2.getPlayerColor()){
             //Wrong player colors :
-            p1.setPlayerColor(Constant.PlayerColor.White);
-            p2.setPlayerColor(Constant.PlayerColor.Black);
+            p1.setPlayerColor(ConstantVar.PlayerColor.White);
+            p2.setPlayerColor(ConstantVar.PlayerColor.Black);
             //colors fixed.
         }
 
@@ -72,7 +74,7 @@ public class ChessGame {
         if(pIndex==1)currentPlayer=player1;
         else if(pIndex==2)currentPlayer=player2;
         if(currentPlayer!=null){
-            if(Constant._isDebug){
+            if(ConstantVar._isDebug){
                 System.out.println(" >> Its "+currentPlayer.getPlayerName()+"'s turn ! "
                 +"\n    > playerColor : "+currentPlayer.getPlayerColor()
                 //+"\n    > player : "+currentPlayer.get
@@ -95,16 +97,16 @@ public class ChessGame {
     }
     public boolean MakeMove(int fx,int fy,int tx,int ty) {
         if(currentPlayer.hasMoved){
-            System.out.println(Constant.errAlreadyMoved);
+            System.out.println(ConstantVar.errAlreadyMoved);
             return false;
         }
         if (fx < 1 || fy < 1 || tx < 1 || ty < 1
                 || fx > 8 || fy > 8 || tx > 8 || ty > 8) {
-            System.out.println(Constant.errPieceOutOfRange);
+            System.out.println(ConstantVar.errPieceOutOfRange);
             return false;
         }
         if(currentPlayer.selectedPiece == null) {
-            System.out.println(Constant.errHasNotSelected);
+            System.out.println(ConstantVar.errHasNotSelected);
             return false;
         }
 
@@ -117,14 +119,14 @@ public class ChessGame {
 
 
         if (fromPiece == null) {
-            System.out.println(Constant.errNoPiece);
+            System.out.println(ConstantVar.errNoPiece);
             return false;
         }
         if (toPiece != null && fromPiece.OwnerColor == toPiece.OwnerColor) {
-            if(Constant._isDebug){
-                System.out.println(Constant.errCantMoveThere+" (Same color) : "+fromPiece.mapIcon+" and "+toPiece.mapIcon);
+            if(ConstantVar._isDebug){
+                System.out.println(ConstantVar.errCantMoveThere+" (Same color) : "+fromPiece.mapIcon+" and "+toPiece.mapIcon);
             }else{
-                System.out.println(Constant.errCantMoveThere);
+                System.out.println(ConstantVar.errCantMoveThere);
             }
             return false;
         }
@@ -135,19 +137,19 @@ public class ChessGame {
 
         if (fromPiece == toPiece){
 
-            if(Constant._isDebug){
-                System.out.println(Constant.errCantMoveThere+" (Same Piece) ");
+            if(ConstantVar._isDebug){
+                System.out.println(ConstantVar.errCantMoveThere+" (Same Piece) ");
             }else{
-                System.out.println(Constant.errCantMoveThere);
+                System.out.println(ConstantVar.errCantMoveThere);
             }
         }
 
         if(!IsValidMove(fromPiece,toPiece,fx,fy,tx,ty)){
 
-            if(Constant._isDebug){
-                System.out.println(Constant.errCantMoveThere+" (Invalid Move) ");
+            if(ConstantVar._isDebug){
+                System.out.println(ConstantVar.errCantMoveThere+" (Invalid Move) ");
             }else{
-                System.out.println(Constant.errCantMoveThere);
+                System.out.println(ConstantVar.errCantMoveThere);
             }
             return false;
         }
@@ -156,8 +158,8 @@ public class ChessGame {
 
         //===================================
         //Make the move
-        if(toPiece==null)System.out.println(Constant.successMoved);
-        else System.out.println(Constant.successMovedAndDestroyed);
+        if(toPiece==null)System.out.println(ConstantVar.successMoved);
+        else System.out.println(ConstantVar.successMovedAndDestroyed);
         LastMove=new ChessHistory(moveHistory.size(),theGamePieces,fx,fy,tx,ty);//Save History
 
 
@@ -174,7 +176,9 @@ public class ChessGame {
 
         fromPiece.isFirstMove=false;
         currentPlayer.hasMoved=true;
-
+        if(ConstantVar._isDebug){
+            PrintBoard(true,true);
+        }
 
         return true;
     }
@@ -190,7 +194,8 @@ public class ChessGame {
         if(ch.toPiece!=null&& ch.toPiece.name.equals("king")){
             var Winner=ch.fromPiece.Owner;
             var Loser=ch.toPiece.Owner;
-            GameEnd(Winner, Player.gameResultSituation.Win,Loser, Player.gameResultSituation.Lose);
+            GameEnd(Winner, Player.gameResultSituation.Win
+                    ,Loser, Player.gameResultSituation.Lose);
         }
         if(currentMoves>limit){
             var p1=ch.fromPiece.Owner;
@@ -201,27 +206,39 @@ public class ChessGame {
     public void GameEnd(Player p1,Player.gameResultSituation situ1,Player p2,Player.gameResultSituation situ2){
         p1.playerGameEnd(situ1);
         p2.playerGameEnd(situ2);
+        if(situ1== Player.gameResultSituation.Draw) PrintFormatted.printGameRes(null,true);
+        else {
+            Player winner = p1;
+            if (situ1 == Player.gameResultSituation.Lose) winner = p2;
+            PrintFormatted.printGameRes(winner,false);
+        }
+        Menu.situ= Menu.situation.mainMenu;
+    }
+    public void currentForfeit(){
+        Player otherPlayer=player1;
+        if(currentPlayer==otherPlayer)otherPlayer=player2;
+        GameEnd(currentPlayer, Player.gameResultSituation.Forfeit,otherPlayer, Player.gameResultSituation.Win);
     }
     public boolean currentPlayerSelect(int fx,int fy){
             if(fx<1||fy<1||fx>8||fy>8){
-                System.out.println(Constant.errPieceOutOfRange);
+                System.out.println(ConstantVar.errPieceOutOfRange);
                 return false;
             }
             ChessPiece sp=getPieceByPosition(fx,fy);
         if(currentPlayer==null){
             //ERROR Current player is null ! (Should never happen)
-            System.out.println(Constant.errUnknown);
+            System.out.println(ConstantVar.errUnknown);
             return false;
         }
             if(sp==null){
-                System.out.println(Constant.errNoPiece);
+                System.out.println(ConstantVar.errNoPiece);
                 return false;
             }
 
             if (sp.Owner != currentPlayer) {
                     //invalid , not my piece
-                    System.out.println(Constant.errIsYourEnemyPiece);
-                    if(Constant._isDebug){
+                    System.out.println(ConstantVar.errIsYourEnemyPiece);
+                    if(ConstantVar._isDebug){
                         System.out.println(" [deubg] "+sp.mapIcon+" is a piece of "+sp.Owner.getPlayerName()+" : "+sp.OwnerColor);
                     }
                     return false;
@@ -229,28 +246,28 @@ public class ChessGame {
 
             currentPlayer.selectedPiece=sp;
 
-            if(Constant._isDebug){
-                System.out.println(Constant.successSelected+" "+sp.mapIcon+" ");
+            if(ConstantVar._isDebug){
+                System.out.println(ConstantVar.successSelected+" "+sp.mapIcon+" ");
             }
-            else  System.out.println(Constant.successSelected);
+            else  System.out.println(ConstantVar.successSelected);
 
           return true;
     }
     public boolean currentPlayerDeselect(){
         if(currentPlayer.selectedPiece==null){
-            System.out.println(Constant.errNoPiece);
+            System.out.println(ConstantVar.errNoPiece);
             return false;
         }
         currentPlayer.selectedPiece=null;
-        System.out.println(Constant.successDeselected);
+        System.out.println(ConstantVar.successDeselected);
         return true;
     }
     public boolean currentPlayerEndTurn(){
         if(currentPlayer==null|| !currentPlayer.hasMoved){
-            System.out.println(Constant.errHasNotMoved);
+            System.out.println(ConstantVar.errHasNotMoved);
             return false;
         }
-        System.out.println(Constant.successTurnCompleted);
+        System.out.println(ConstantVar.successTurnCompleted);
 
         moveHistory.add(LastMove);//Add Move His tory
         if(LastMove.toPiece!=null)killHistory.add(LastMove);
@@ -264,7 +281,7 @@ public class ChessGame {
     }
     public void currentPlayerShowTurn(){
 
-        System.out.println(Constant.strShowTurn
+        System.out.println(ConstantVar.strShowTurn
                 .replace("[player]",currentPlayer.getPlayerName())
                 .replace("[color]",currentPlayer.getPlayerColor().toString())
         );
@@ -272,15 +289,15 @@ public class ChessGame {
     public boolean currentPlayerUndo(){
 
         if(currentPlayer.undo_remain<=0){
-            System.out.println(Constant.errAlreadyUsedAllUndo);
+            System.out.println(ConstantVar.errAlreadyUsedAllUndo);
             return false;
         }
         if(currentPlayer.usedUndo){
-            System.out.println(Constant.errAlreadyUsedThisTurnUndo);
+            System.out.println(ConstantVar.errAlreadyUsedThisTurnUndo);
             return false;
         }
         if(!currentPlayer.hasMoved){
-            System.out.println(Constant.errHasNotMovedBeforeUndo);
+            System.out.println(ConstantVar.errHasNotMovedBeforeUndo);
             return false;
         }
         //=============================================
@@ -293,23 +310,16 @@ public class ChessGame {
         currentPlayer.hasMoved=false;
         currentPlayer.usedUndo=true;
 
-        System.out.println(Constant.successUndo);
+        System.out.println(ConstantVar.successUndo);
 
-        if(Constant._isDebug){
+        if(ConstantVar._isDebug){
             PrintBoard(true,true);
         }
 
         return true;
     }
-    public void currentPlayerShowUndoNumber(){
 
-        System.out.println(Constant.strShowUndoNum
-                .replace("[n]",currentPlayer.undo_remain+"")
-
-        );
-    }
-
-    public boolean IsValidMove(ChessPiece fromPiece,ChessPiece toPiece,int fx,int fy,int tx,int ty){
+    private boolean IsValidMove(ChessPiece fromPiece,ChessPiece toPiece,int fx,int fy,int tx,int ty){
         if(fromPiece==null)return false;
         if(toPiece!=null&&(fromPiece.OwnerColor == toPiece.OwnerColor))return false;
         boolean AbsEquals = Math.abs(tx - fx) == Math.abs(ty - fy);
@@ -319,7 +329,7 @@ public class ChessGame {
                 return myFunc.Distance(fx,fy,tx,ty)<=1;
             case "pawn":
                 int multiplier=1;
-                if(fromPiece.OwnerColor== Constant.PlayerColor.Black) {
+                if(fromPiece.OwnerColor== ConstantVar.PlayerColor.Black) {
                     multiplier=-1;
                 }
                     if (fromPiece.isFirstMove && tx - fx == 2*multiplier && ty == fy) return true;
@@ -366,23 +376,21 @@ public class ChessGame {
                 tx=tmp;
             }
             for(int i=fx+1;i<tx;i++){
-                if (theGamePieces[fx][i]!=null) return false;
+                if (theGamePieces[i][fy]!=null) return false;
             }
             return true;
         }
         else if(Math.abs(tx-fx)==Math.abs(ty-fy)){
+            int xMultipler =1;
+            int yMultipler = 1;
             if(tx<fx){
-                int tmp=fx;
-                fx=tx;
-                tx=tmp;
+                xMultipler =-1;
             }
             if(ty<fy){
-                int tmp=fy;
-                fy=ty;
-                ty=tmp;
+                yMultipler = -1;
             }
             for(int i=1;i<ty-fy;i++)
-                if (theGamePieces[fx+i][fy+i]!=null) return false;
+                if (theGamePieces[fx+i*xMultipler][fy+i*yMultipler]!=null) return false;
             return true;
         }
         else return false;
@@ -391,7 +399,7 @@ public class ChessGame {
         boolean IsFirst=true;
         System.out.println("");
 
-        if(!fancy)fancy=Constant._isDebug;
+        if(!fancy)fancy= ConstantVar._isDebug;
 
         for (int i = 1; i < theGamePieces.length; i++) {
             IsFirst=true;
@@ -408,7 +416,7 @@ public class ChessGame {
                 else System.out.print("|");
 
                 if (fancy){
-                    if(p==null) System.out.print(" ");
+                    if(p==null) System.out.print("  ");
                     else System.out.print(p.mapIcon);
                 }else{
                     if(p==null) System.out.print("  ");
@@ -420,29 +428,29 @@ public class ChessGame {
         }
     }
     public static void startTheGame(String p1,String p2,int limit){
-        if (!p1.matches(Constant.regexAcceptableCharacters)) {
-            System.out.println(Constant.errInvalidUsername);
+        if (!p1.matches(ConstantVar.regexAcceptableCharacters)) {
+            System.out.println(ConstantVar.errInvalidUsername);
             return;
         } else if (limit < 0) {
-            System.out.println(Constant.errInvalidLimit);
+            System.out.println(ConstantVar.errInvalidLimit);
             return;
         } else if (p1.equals(p2)) {
-            System.out.println(Constant.errChooseAnotherPlayer);
+            System.out.println(ConstantVar.errChooseAnotherPlayer);
             return;
         } else {
             var p1c=Player.getPlayerByName(p1);
             var p2c=Player.getPlayerByName(p2);
             if (p1c == null) {
-                System.out.println(Constant.errNotExistPlayer);
+                System.out.println(ConstantVar.errNotExistPlayer);
                 return;
             }
             else if (p2c == null) {
-                System.out.println(Constant.errNotExistPlayer);
+                System.out.println(ConstantVar.errNotExistPlayer);
                 return;
             }else{
                 Main.theGame = new ChessGame(p1c, p2c, limit);
                 Menu.setMenuSituation(Menu.situation.gameMenu);
-                System.out.println(Constant.successNewGame
+                System.out.println(ConstantVar.successNewGame
                         .replace("[first]",p1)
                         .replace("[second]",p2)
                         .replace("[limit]",limit+"")

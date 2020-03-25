@@ -1,6 +1,6 @@
 package com.company.Structs;
 
-import com.company.Classes.Constant;
+import com.company.Classes.ConstantVar;
 import com.company.Main;
 
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ public class Player {
 	private boolean isLogined;
 
 
-	private Constant.PlayerColor playerColor;
+	private ConstantVar.PlayerColor playerColor;
 	private int win;
 	private int lose;
 	private int draw;
@@ -61,7 +61,7 @@ public class Player {
 		}
 	}
 	public void logOut() {
-		System.out.println(Constant.successLogOut);
+		System.out.println(ConstantVar.successLogOut);
 		this.isLogined = false;
 		//=============CHANGE SITUATION=====================
 		Menu.setMenuSituation(Menu.situation.loginMenu);
@@ -74,11 +74,11 @@ public class Player {
 
 		Player player = getPlayerByName(name);
 		if (player != null) {
-			System.out.println(Constant.errUserAlreadyExist);
+			System.out.println(ConstantVar.errUserAlreadyExist);
 			return;
 		}
 		Player p = new Player(name, pass, false);
-		System.out.println(Constant.successRegister);
+		System.out.println(ConstantVar.successRegister);
 	}
 
 	public static void login(String name, String pass) {
@@ -87,13 +87,13 @@ public class Player {
 
 		Player player = getPlayerByName(name);
 		if (player == null) {
-			System.out.println(Constant.errNotExistPlayer);
+			System.out.println(ConstantVar.errNotExistPlayer);
 			return;
 		} else if (!player.pass.equals(pass)) {
-			System.out.println(Constant.errincorrectPass);
+			System.out.println(ConstantVar.errincorrectPass);
 			return;
 		} else player.isLogined = true;
-		System.out.println(Constant.successLogin);
+		System.out.println(ConstantVar.successLogin);
 		Main.p1 = player;
 		//=============CHANGE SITUATION=====================
 		Menu.setMenuSituation(Menu.situation.mainMenu);
@@ -106,29 +106,29 @@ public class Player {
 
 		Player player = getPlayerByName(name);
 		if (player == null) {
-			System.out.println(Constant.errNotExistPlayer);
+			System.out.println(ConstantVar.errNotExistPlayer);
 			return;
 		} else if (!player.pass.equals(pass)) {
-			System.out.println(Constant.errincorrectPass);
+			System.out.println(ConstantVar.errincorrectPass);
 			return;
 		}
 		for (int i = 0; i < allPlayers.size(); i++) {
 			if (name.equals(allPlayers.get(i).name)) allPlayers.remove(i);
 		}
-		System.out.println(Constant.successRemove.replace("*", name));
+		System.out.println(ConstantVar.successRemove.replace("*", name));
 	}
 
 	private static boolean MatchAcceptableUsername(String name) {
-		if (!name.matches(Constant.regexAcceptableCharacters)) {
-			System.out.println(Constant.errInvalidUsername);
+		if (!name.matches(ConstantVar.regexAcceptableCharacters)) {
+			System.out.println(ConstantVar.errInvalidUsername);
 			return false;
 		}
 		return true;
 	}
 
 	private static boolean MatchAcceptablePass(String pass) {
-		if (!pass.matches(Constant.regexAcceptableCharacters)) {
-			System.out.println(Constant.errInvalidPass);
+		if (!pass.matches(ConstantVar.regexAcceptableCharacters)) {
+			System.out.println(ConstantVar.errInvalidPass);
 			return false;
 		}
 		return true;
@@ -144,7 +144,7 @@ public class Player {
 		return name;
 	}
 
-	public Constant.PlayerColor getPlayerColor() {
+	public ConstantVar.PlayerColor getPlayerColor() {
 		return playerColor;
 	}
 
@@ -172,7 +172,7 @@ public class Player {
 		this.draw = draw;
 	}
 
-	public void setPlayerColor(Constant.PlayerColor playerColor) {
+	public void setPlayerColor(ConstantVar.PlayerColor playerColor) {
 		this.playerColor = playerColor;
 	}
 
