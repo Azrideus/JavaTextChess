@@ -13,12 +13,17 @@ import java.util.regex.Pattern;
 
 public class Main {
     public static Player p1;
-    public static ChessGame TheGame;
+    public static ChessGame theGame;
     public static void main(String[] args) {
 
         Scanner in = new Scanner(System.in);
 
 
+        theGame=new ChessGame(new Player("name1","pass1",true)
+        ,new Player("name2","pass2",true)
+                ,100
+        );
+        theGame.PrintBoard(true);
         while(true) {
             String line=in.nextLine();
             if(Menu.situ== Menu.situation.loginMenu) loginMenu(line);

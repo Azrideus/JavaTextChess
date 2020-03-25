@@ -4,7 +4,7 @@ public class Constant {
 	public enum PlayerColor{
 		White,Black
 	}
-
+	public static boolean _isDebug;
 
 	public  static String regexAcceptableCharacters="[a-zA-Z0-9]*";
 	public  static String regexRegister="register (.*?) (.*?)$";
