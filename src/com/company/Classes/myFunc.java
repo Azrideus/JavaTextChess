@@ -6,6 +6,10 @@ import java.util.List;
 
 public class myFunc {
 
+    public static double Distance(int fx,int fy,int tx,int ty) {
+        return ((fx-tx)^2)+((fy-ty)^2);
+    }
+
     public static Object SearchInList(List<Object> tList, Object search) {
         for (Object v : tList) {
             if (v == search) return v;

@@ -23,7 +23,9 @@ public class Main {
         ,new Player("name2","pass2",true)
                 ,100
         );
-        theGame.PrintBoard(true);
+        theGame.PrintBoard(true,true);
+        ChessPiece p1=theGame.getPieceByPosition(1,1);
+        System.out.println(p1.mapIcon+" is at "+p1.x+" : "+p1.y );
         while(true) {
             String line=in.nextLine();
             if(Menu.situ== Menu.situation.loginMenu) loginMenu(line);

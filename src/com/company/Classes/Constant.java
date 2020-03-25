@@ -27,7 +27,6 @@ public class Constant {
 	public  static String errHasNotMoved="you must move then proceed to next turn";
 	public  static String errAlreadyUsedUndo="you cannot undo anymore";
 	public  static String errHasNotMovedBeforeUndo="you must move before undo";
-	public  static String errAlreadyUsedUndo="you cannot undo anymore";
 
 
 	public  static String successRegister="register successful";
