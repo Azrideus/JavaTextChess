@@ -1,6 +1,7 @@
 package com.company.Structs;
 
 import com.company.Classes.Constant;
+import com.company.Classes.myFunc;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,7 +77,10 @@ public class ChessGame {
             //invalid
             return false;
         }
-
+        if(fx==tx&&fy==ty){
+            //invalid same pos
+            return false;
+        }
         ChessPiece fromPiece=theGamePieces[fx][fy];
         ChessPiece toPiece=theGamePieces[tx][ty];
 
@@ -89,8 +93,9 @@ public class ChessGame {
             //invalid same color
             return false;
         }
-        if(fromPiece==toPiece){
-            //invalid same position
+
+        if(!IsValidMove(fromPiece,toPiece,fx,fy,tx,ty)){
+            //Cant make that move
             return false;
         }
 
@@ -107,6 +112,16 @@ public class ChessGame {
         fromPiece.isFirstMove=false;
         return true;
     }
+    public boolean IsValidMove(ChessPiece fromPiece,ChessPiece toPiece,int fx,int fy,int tx,int ty){
+        if(fromPiece==null)return false;
+        if(toPiece!=null&&(fromPiece.OwnerColor == toPiece.OwnerColor))return false;
+        switch (fromPiece.name){
+            case "king":
+                return myFunc.Distance(fx,fy,tx,ty)<=1;
+        }
+        return true;
+    }
+
     public ChessPiece getPieceByPosition(int fx,int fy){
         if(fx<1||fy<1||fx>8||fy>8)return null;
         return theGamePieces[fx][fy];
@@ -124,7 +139,7 @@ public class ChessGame {
             for (int j = 1; j < theGamePieces[i].length; j++) {
                 ChessPiece p;
                 if(flip){
-                    p=theGamePieces[i][9-j];
+                    p=theGamePieces[9-i][j];
                 }else{
                     p=theGamePieces[i][j];
                 }
