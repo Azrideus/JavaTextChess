@@ -19,6 +19,7 @@ public class ChessGame {
         this.player2=p2;
         this.currentMoves=0;
         this.limit=limit;
+        
         theGamePieces=new ChessPiece[9][9];
         MoveHistory=new ArrayList<ChessMove>();
         //=========================================
@@ -105,12 +106,27 @@ public class ChessGame {
         } else if (p1.equals(p2)) {
             System.out.println(Constant.errChooseAnotherPlayer);
             return;
-        } else if (Player.getPlayerByName(p2) == null) {
-            System.out.println(Constant.errNotExistPlayer);
-            return;
         } else {
-            ChessGame theGame = new ChessGame(Player.getPlayerByName(p1), Player.getPlayerByName(p2), limit);
-            Menu.setMenuSituation(Menu.situation.gameMenue);
+            var p1c=Player.getPlayerByName(p1);
+            var p2c=Player.getPlayerByName(p2);
+            if (p1c == null) {
+                System.out.println(Constant.errNotExistPlayer);
+                return;
+            }
+            else if (p2c == null) {
+                System.out.println(Constant.errNotExistPlayer);
+                return;
+            }else{
+                ChessGame theGame = new ChessGame(p1c, p2c, limit);
+                Menu.setMenuSituation(Menu.situation.gameMenue);
+                System.out.println(Constant.successNewGame
+                        .replace("[first]",p1)
+                        .replace("[second]",p2)
+                        .replace("[limit]",limit+"")
+                )
+                        ;
+            }
+
         }
     }
 }

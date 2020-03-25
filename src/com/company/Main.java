@@ -22,6 +22,7 @@ public class Main {
         while(true) {
             String line=in.nextLine();
             if(Menu.situ== Menu.situation.loginMenu) loginMenu(line);
+            else mainMenu(line);
         }
 
 
