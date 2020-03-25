@@ -1,14 +1,17 @@
 package com.company.Structs;
 
 public class ChessMove {
-    public int fromX,fromY;
-    public int toX,toY;
-    ChessPiece[][] theGamePiecesBeforeMove;
-    ChessPiece fromPiece;
-    ChessPiece toPiece;
+    public final int fromX,fromY;
+    public final int toX,toY;
+    public final ChessPiece[][] theGamePiecesBeforeMove;
+    public final ChessPiece fromPiece;
+    public final ChessPiece toPiece;
 
     public ChessMove(ChessPiece[][] theGamePiecesBeforeMove,
                      ChessPiece fromPiece, ChessPiece toPiece){
+
+        this.fromPiece=fromPiece;
+        this.toPiece=toPiece;
         this.fromX=fromPiece.x;
         this.fromY=fromPiece.y;
         this.toX=toPiece.x;
@@ -17,10 +20,7 @@ public class ChessMove {
     }
 
     public ChessMove(ChessPiece[][] theGamePiecesBeforeMove,int fx,int fy,int tx,int ty){
-        if(fx<1||fy<1||tx<1||ty<1
-        ||fx>8||fy>8||tx>8||ty>8){
-            return;
-        }
+
         this.fromX=fx;
         this.fromY=fy;
         this.toX=tx;
@@ -30,6 +30,7 @@ public class ChessMove {
         toPiece=theGamePiecesBeforeMove[toX][toY];
 
         this.theGamePiecesBeforeMove=theGamePiecesBeforeMove;
+
     }
 
 }

@@ -77,7 +77,7 @@ public class ChessGame {
         theGamePieces[tx][ty]=null;//Capture if any exists
 
         theGamePieces[tx][ty]=fromPiece;//move
-        theGamePieces[fx][fy]=null;
+        theGamePieces[fx][fy]=null;//Set old to null
         fromPiece.isFirstMove=false;
         return true;
     }
