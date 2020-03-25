@@ -71,26 +71,37 @@ public class ChessGame {
     }
 
 
-    public boolean MakeMove(int fx,int fy,int tx,int ty){
-        if(fx<1||fy<1||tx<1||ty<1
-                ||fx>8||fy>8||tx>8||ty>8){
+    public boolean MakeMove(int fx,int fy,int tx,int ty) {
+        if (fx < 1 || fy < 1 || tx < 1 || ty < 1
+                || fx > 8 || fy > 8 || tx > 8 || ty > 8) {
             System.out.println(Constant.errPieceOutOfRange);
             return false;
         }
         ChessPiece fromPiece=theGamePieces[fx][fy];
         ChessPiece toPiece=theGamePieces[tx][ty];
+        if (fx == tx && fy == ty) {
+            //invalid same pos
+            return false;
+        }
 
 
-        if(fromPiece==null){
+        if (fromPiece == null) {
             System.out.println(Constant.errNoPiece);
             return false;
         }
-        if(toPiece!=null&&fromPiece.OwnerColor==toPiece.OwnerColor){
+        if (toPiece != null && fromPiece.OwnerColor == toPiece.OwnerColor) {
             System.out.println(Constant.errChooseAnotherPlayer);
             return false;
         }
-        if(fromPiece==toPiece)
+
+        if (fromPiece.Owner != currentPlayer) {
+            //invalid , not my piece
+            return false;
+        }
+
+        if (fromPiece == toPiece){
             System.out.println(Constant.errCantMoveThere);
+        }
 
         if(!IsValidMove(fromPiece,toPiece,fx,fy,tx,ty)){
             System.out.println(Constant.errCantMoveThere);
@@ -135,6 +146,10 @@ public class ChessGame {
           if(currentPlayer==null){
               //ERROR Current player is null ! (Should never happen)
               return false;
+          }
+          if (sp.Owner != currentPlayer) {
+                  //invalid , not my piece
+                  return false;
           }
           currentPlayer.selectedPiece=sp;
           return true;
