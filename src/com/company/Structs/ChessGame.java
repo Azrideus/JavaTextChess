@@ -126,6 +126,19 @@ public class ChessGame {
         if(fx<1||fy<1||fx>8||fy>8)return null;
         return theGamePieces[fx][fy];
     }
+    public boolean currentPlayerSelect(int fx,int fy){
+          ChessPiece sp=getPieceByPosition(fx,fy);
+          if(sp==null){
+              //ERROR CANT SELECT THIS
+              return false;
+          }
+          if(currentPlayer==null){
+              //ERROR Current player is null ! (Should never happen)
+              return false;
+          }
+          currentPlayer.selectedPiece=sp;
+          return true;
+    }
 
 
     public void PrintBoard(boolean fancy,boolean flip){
