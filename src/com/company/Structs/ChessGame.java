@@ -73,7 +73,7 @@ public class ChessGame {
     public boolean MakeMove(int fx,int fy,int tx,int ty){
         if(fx<1||fy<1||tx<1||ty<1
                 ||fx>8||fy>8||tx>8||ty>8){
-            //invalid
+            System.out.println(Constant.errPieceOutOfRange);
             return false;
         }
 
@@ -82,15 +82,15 @@ public class ChessGame {
 
 
         if(fromPiece==null){
-            //invalid
+            System.out.println(Constant.errNoPiece);
             return false;
         }
         if(toPiece!=null&&fromPiece.OwnerColor==toPiece.OwnerColor){
-            //invalid same color
+            System.out.println(Constant.errChooseAnotherPlayer);
             return false;
         }
         if(fromPiece==toPiece){
-            //invalid same position
+            System.out.println(Constant.errCantMoveThere);
             return false;
         }
 
@@ -108,7 +108,9 @@ public class ChessGame {
         return true;
     }
     public ChessPiece getPieceByPosition(int fx,int fy){
-        if(fx<1||fy<1||fx>8||fy>8)return null;
+        if(fx<1||fy<1||fx>8||fy>8){
+            return null;
+        }
         return theGamePieces[fx][fy];
     }
 
