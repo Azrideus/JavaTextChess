@@ -77,10 +77,6 @@ public class ChessGame {
             System.out.println(Constant.errPieceOutOfRange);
             return false;
         }
-        if(fx==tx&&fy==ty){
-            //invalid same pos
-            return false;
-        }
         ChessPiece fromPiece=theGamePieces[fx][fy];
         ChessPiece toPiece=theGamePieces[tx][ty];
 
@@ -97,7 +93,7 @@ public class ChessGame {
             System.out.println(Constant.errCantMoveThere);
 
         if(!IsValidMove(fromPiece,toPiece,fx,fy,tx,ty)){
-            //Cant make that move
+            System.out.println(Constant.errCantMoveThere);
             return false;
         }
 
