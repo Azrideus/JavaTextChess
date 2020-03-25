@@ -11,7 +11,7 @@ public class ChessGame {
     ChessPiece[][] theGamePieces;
     ChessPiece[][] theGamePiecesBeforeMove;
 
-    List<ChessMove> MoveHistory;
+    public List<ChessMove> MoveHistory;
     Player player1;
     Player player2;
 
@@ -76,17 +76,19 @@ public class ChessGame {
                 //+"\n    > player : "+currentPlayer.get
                 );
             }
+            SaveCurrentBoard();
 
-            for (int i = 0; i <=8 ; i++) {
-                for (int j = 0; j <=8 ; j++) {
-                    theGamePiecesBeforeMove[i][j]=theGamePieces[i][j];
-                }
-            }
             currentPlayer.selectedPiece=null;
             currentPlayer.hasMoved=false;
         }
     }
-
+    public void SaveCurrentBoard(){
+        for (int i = 0; i <=8 ; i++) {
+            for (int j = 0; j <=8 ; j++) {
+                theGamePiecesBeforeMove[i][j]=theGamePieces[i][j];
+            }
+        }
+    }
     public boolean MakeMove(int tx,int ty) {
         int fx=currentPlayer.selectedPiece.x;
         int fy=currentPlayer.selectedPiece.y;
@@ -163,13 +165,14 @@ public class ChessGame {
         theGamePieces[tx][ty]=null;//Capture if any exists
         //-------------
 
+        fromPiece.x=tx;
+        fromPiece.y=ty;
 
         theGamePieces[tx][ty]=fromPiece;//move
         theGamePieces[fx][fy]=null;//Set old to null
 
 
         fromPiece.isFirstMove=false;
-
         currentPlayer.hasMoved=true;
 
 
@@ -259,7 +262,7 @@ public class ChessGame {
             }
         }
         //=============================================
-
+        currentPlayer.hasMoved=false;
         System.out.println(Constant.successUndo);
         if(Constant._isDebug){
             PrintBoard(true,true);
