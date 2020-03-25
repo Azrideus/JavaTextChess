@@ -22,5 +22,6 @@ public class Constant {
 	public  static String successLogin="login successful";
 	public  static String successRemove="removed * successfully";
 	public  static String successLogOut="logout successful";
+	public  static String successNewGame="new game started successfully between [first] and [second] with limit [limit]";
 	public  static String errInvalidCmd="invalid command";
 }
