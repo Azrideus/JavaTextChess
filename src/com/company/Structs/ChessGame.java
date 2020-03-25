@@ -10,6 +10,12 @@ import java.util.List;
 public class ChessGame {
     ChessPiece[][] theGamePieces;
     public static List<ChessMove> MoveHistory;
+    ChessPiece[][] theGamePiecesBeforeMove;
+
+    public List<ChessMove> MoveHistory;
+
+    ChessMove LastMove;
+
     Player player1;
     Player player2;
 
@@ -25,6 +31,7 @@ public class ChessGame {
         this.limit=limit;
 
         theGamePieces=new ChessPiece[9][9];
+        theGamePiecesBeforeMove=new ChessPiece[9][9];
         MoveHistory=new ArrayList<ChessMove>();
         //=========================================
 
@@ -38,11 +45,15 @@ public class ChessGame {
         for (ChessPiece p:
             ChessPiece.CreatePieces(p1)) {
             theGamePieces[p.OriginalX][p.OriginalY]=p;
+            p.isFirstMove=true;
         }
         for (ChessPiece p:
             ChessPiece.CreatePieces(p2)) {
             theGamePieces[p.OriginalX][p.OriginalY]=p;
+            p.isFirstMove=true;
         }
+        p1.undo_remain=2;
+        p2.undo_remain=2;
         SwitchPlayer(1);
         //========================================
         //PrintBoard(true);
@@ -69,11 +80,16 @@ public class ChessGame {
                 //+"\n    > player : "+currentPlayer.get
                 );
             }
+            SaveCurrentBoard();
+
             currentPlayer.selectedPiece=null;
             currentPlayer.hasMoved=false;
+            currentPlayer.usedUndo=false;
         }
     }
-
+    public void SaveCurrentBoard(){
+        theGamePiecesBeforeMove=myFunc.CloneChessBoard(theGamePieces);
+    }
     public boolean MakeMove(int tx,int ty) {
         int fx=currentPlayer.selectedPiece.x;
         int fy=currentPlayer.selectedPiece.y;
@@ -144,25 +160,21 @@ public class ChessGame {
         //Make the move
         if(toPiece==null)System.out.println(Constant.successMoved);
         else System.out.println(Constant.successMovedAndDestroyed);
-        MoveHistory.add(new ChessMove(theGamePieces,fx,fy,tx,ty));//Save History
+        LastMove=new ChessMove(MoveHistory.size(),theGamePieces,fx,fy,tx,ty);//Save History
 
 
         //-------------
-        if(toPiece==null){
-            System.out.println(Constant.successMoved);
-        }else{
-            System.out.println(Constant.successMovedAndDestroyed);
-        }
         theGamePieces[tx][ty]=null;//Capture if any exists
         //-------------
 
+        fromPiece.x=tx;
+        fromPiece.y=ty;
 
         theGamePieces[tx][ty]=fromPiece;//move
         theGamePieces[fx][fy]=null;//Set old to null
 
 
         fromPiece.isFirstMove=false;
-
         currentPlayer.hasMoved=true;
 
 
@@ -210,7 +222,6 @@ public class ChessGame {
           return true;
     }
     public boolean currentPlayerDeselect(){
-
         if(currentPlayer.selectedPiece==null){
             System.out.println(Constant.errNoPiece);
             return false;
@@ -220,12 +231,14 @@ public class ChessGame {
         return true;
     }
     public boolean currentPlayerEndTurn(){
-        if(currentPlayer==null||currentPlayer.hasMoved==false){
+        if(currentPlayer==null|| !currentPlayer.hasMoved){
             System.out.println(Constant.errHasNotMoved);
             return false;
         }
         System.out.println(Constant.successTurnCompleted);
-        SwitchPlayer(0);
+
+        MoveHistory.add(LastMove);//Add Move History
+        SwitchPlayer(0);//Switch to next player
         return true;
     }
     public void currentPlayerShowTurn(){
@@ -233,6 +246,45 @@ public class ChessGame {
         System.out.println(Constant.strShowTurn
                 .replace("[player]",currentPlayer.getPlayerName())
                 .replace("[color]",currentPlayer.getPlayerColor().toString())
+        );
+    }
+    public boolean currentPlayerUndo(){
+
+        if(currentPlayer.undo_remain<=0){
+            System.out.println(Constant.errAlreadyUsedAllUndo);
+            return false;
+        }
+        if(currentPlayer.usedUndo){
+            System.out.println(Constant.errAlreadyUsedThisTurnUndo);
+            return false;
+        }
+        if(!currentPlayer.hasMoved){
+            System.out.println(Constant.errHasNotMovedBeforeUndo);
+            return false;
+        }
+        //=============================================
+        for (int i = 0; i <=8 ; i++) {
+            for (int j = 0; j <=8 ; j++) {
+                theGamePieces[i][j]=theGamePiecesBeforeMove[i][j];
+            }
+        }
+        //=============================================
+        currentPlayer.hasMoved=false;
+        currentPlayer.usedUndo=true;
+
+        System.out.println(Constant.successUndo);
+
+        if(Constant._isDebug){
+            PrintBoard(true,true);
+        }
+
+        return true;
+    }
+    public void currentPlayerShowUndoNumber(){
+
+        System.out.println(Constant.strShowUndoNum
+                .replace("[n]",currentPlayer.undo_remain+"")
+
         );
     }
 
@@ -346,7 +398,6 @@ public class ChessGame {
             System.out.print("\n");
         }
     }
-
     public static void startTheGame(String p1,String p2,int limit){
         if (!p1.matches(Constant.regexAcceptableCharacters)) {
             System.out.println(Constant.errInvalidUsername);

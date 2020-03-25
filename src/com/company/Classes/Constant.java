@@ -49,4 +49,5 @@ public class Constant {
 
 
 	public  static String strShowTurn="it is player [username] turn with color [color]";
+	public  static String strShowUndoNum="you have [n] undo moves";
 }

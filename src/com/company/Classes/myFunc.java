@@ -1,10 +1,25 @@
 package com.company.Classes;
 
+import com.company.Structs.ChessPiece;
 import com.company.Structs.Player;
 
 import java.util.List;
 
 public class myFunc {
+
+        public static ChessPiece[][] CloneChessBoard(ChessPiece[][] from){
+            var tempGP=new ChessPiece[9][9];
+            try{
+                for (int i = 0; i <=8 ; i++) {
+                    for (int j = 0; j <=8 ; j++) {
+                        if(from[i][j]!=null)tempGP[i][j]= (ChessPiece) from[i][j].clone();
+                        else tempGP[i][j]=null;
+                    }
+                }
+            }catch (Exception ex){
+                ex.printStackTrace();
+            }return tempGP;
+        }
 
     public static double Distance(int fx,int fy,int tx,int ty) {
         return ((fx-tx)^2)+((fy-ty)^2);

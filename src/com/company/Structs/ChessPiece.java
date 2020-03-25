@@ -5,8 +5,12 @@ import com.company.Classes.Constant;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChessPiece {
+public class ChessPiece  implements Cloneable {
 
+
+    public Object clone()throws CloneNotSupportedException{
+        return super.clone();
+    }
     public static List<ChessPiece> CreatePieces(Player p){
         List<ChessPiece> AllPieces=new ArrayList<ChessPiece>();
         var PColor=p.getPlayerColor();
