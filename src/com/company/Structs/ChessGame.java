@@ -9,6 +9,8 @@ import java.util.List;
 
 public class ChessGame {
     ChessPiece[][] theGamePieces;
+    ChessPiece[][] theGamePiecesBeforeMove;
+
     List<ChessMove> MoveHistory;
     Player player1;
     Player player2;
@@ -25,6 +27,7 @@ public class ChessGame {
         this.limit=limit;
 
         theGamePieces=new ChessPiece[9][9];
+        theGamePiecesBeforeMove=new ChessPiece[9][9];
         MoveHistory=new ArrayList<ChessMove>();
         //=========================================
 
@@ -38,11 +41,15 @@ public class ChessGame {
         for (ChessPiece p:
             ChessPiece.CreatePieces(p1)) {
             theGamePieces[p.OriginalX][p.OriginalY]=p;
+            p.isFirstMove=true;
         }
         for (ChessPiece p:
             ChessPiece.CreatePieces(p2)) {
             theGamePieces[p.OriginalX][p.OriginalY]=p;
+            p.isFirstMove=true;
         }
+        p1.undo_remain=2;
+        p2.undo_remain=2;
         SwitchPlayer(1);
         //========================================
         //PrintBoard(true);
@@ -68,6 +75,12 @@ public class ChessGame {
                 +"\n    > playerColor : "+currentPlayer.getPlayerColor()
                 //+"\n    > player : "+currentPlayer.get
                 );
+            }
+
+            for (int i = 0; i <=8 ; i++) {
+                for (int j = 0; j <=8 ; j++) {
+                    theGamePiecesBeforeMove[i][j]=theGamePieces[i][j];
+                }
             }
             currentPlayer.selectedPiece=null;
             currentPlayer.hasMoved=false;
@@ -140,13 +153,7 @@ public class ChessGame {
         else System.out.println(Constant.successMovedAndDestroyed);
         MoveHistory.add(new ChessMove(theGamePieces,fx,fy,tx,ty));//Save History
 
-
         //-------------
-        if(toPiece==null){
-            System.out.println(Constant.successMoved);
-        }else{
-            System.out.println(Constant.successMovedAndDestroyed);
-        }
         theGamePieces[tx][ty]=null;//Capture if any exists
         //-------------
 
@@ -228,7 +235,30 @@ public class ChessGame {
                 .replace("[color]",currentPlayer.getPlayerColor().toString())
         );
     }
+    public boolean currentPlayerUndo(){
 
+        if(currentPlayer.undo_remain<=0){
+            System.out.println(Constant.errAlreadyUsedAllUndo);
+            return false;
+        }
+        if(!currentPlayer.hasMoved){
+            System.out.println(Constant.errHasNotMovedBeforeUndo);
+            return false;
+        }
+        //=============================================
+        for (int i = 0; i <=8 ; i++) {
+            for (int j = 0; j <=8 ; j++) {
+                theGamePieces[i][j]=theGamePiecesBeforeMove[i][j];
+            }
+        }
+        //=============================================
+
+        System.out.println(Constant.successUndo);
+        if(Constant._isDebug){
+            PrintBoard(true,true);
+        }
+        return true;
+    }
     public boolean IsValidMove(ChessPiece fromPiece,ChessPiece toPiece,int fx,int fy,int tx,int ty){
         if(fromPiece==null)return false;
         if(toPiece!=null&&(fromPiece.OwnerColor == toPiece.OwnerColor))return false;
@@ -339,7 +369,6 @@ public class ChessGame {
             System.out.print("\n");
         }
     }
-
     public static void startTheGame(String p1,String p2,int limit){
         if (!p1.matches(Constant.regexAcceptableCharacters)) {
             System.out.println(Constant.errInvalidUsername);

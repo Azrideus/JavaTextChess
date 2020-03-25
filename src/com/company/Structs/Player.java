@@ -26,6 +26,7 @@ public class Player {
 	public ChessPiece selectedPiece;
 
 	public boolean hasMoved;
+	public int undo_remain;
 
 
 
