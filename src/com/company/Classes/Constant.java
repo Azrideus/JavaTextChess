@@ -18,6 +18,18 @@ public class Constant {
 	public  static String errInvalidPass="password format is invalid";
 	public  static String errUserAlreadyExist="a user exists with this username";
 	public  static String errincorrectPass="incorrect password";
+	public  static String errAlreadyMoved="already moved";
+	public  static String errHasNotSelected="no piece is selected";
+	public  static String errNoPiece="no piece on this spot";
+	public  static String errIsYourEnemyPiece="you can only select one of your pieces";
+	public  static String errCantMoveThere="cannot move to the spot";
+	public  static String errPieceOutOfRange="wrong coordination";
+	public  static String errHasNotMoved="you must move then proceed to next turn";
+	public  static String errAlreadyUsedUndo="you cannot undo anymore";
+	public  static String errHasNotMovedBeforeUndo="you must move before undo";
+	public  static String errAlreadyUsedUndo="you cannot undo anymore";
+
+
 	public  static String successRegister="register successful";
 	public  static String successLogin="login successful";
 	public  static String successRemove="removed * successfully";

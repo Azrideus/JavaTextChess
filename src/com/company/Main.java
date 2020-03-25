@@ -77,6 +77,7 @@ public class Main {
         }
         else if(input.equals("exit")) System.out.println("program ended");
         else System.out.println(Constant.errInvalidCmd);
+        return;
     }
 
 
