@@ -2,7 +2,7 @@ package com.company.Classes;
 
 public class ConstantVar {
 	public enum PlayerColor{
-		White,Black
+		white, black
 	}
 	public static boolean _isDebug=false;
 
@@ -25,7 +25,7 @@ public class ConstantVar {
 	public  static String errincorrectPass="incorrect password";
 	public  static String errInvalidCmd="invalid command";
 	public  static String errAlreadyMoved="already moved";
-	public  static String errHasNotSelected="no piece is selected";
+	public  static String errHasNotSelected="do not have any selected piece";
 	public  static String errNoPiece="no piece on this spot";
 	public  static String errIsYourEnemyPiece="you can only select one of your pieces";
 	public  static String errCantMoveThere="cannot move to the spot";

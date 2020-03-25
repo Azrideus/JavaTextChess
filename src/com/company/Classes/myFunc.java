@@ -22,7 +22,7 @@ public class myFunc {
         }
 
     public static double Distance(int fx,int fy,int tx,int ty) {
-        return ((fx-tx)^2)+((fy-ty)^2);
+        return Math.sqrt((fx-tx)^2)+((fy-ty)^2);
     }
 
     public static Object SearchInList(List<Object> tList, Object search) {

@@ -15,7 +15,8 @@ public class ChessGame {
     ChessPiece[][] theGamePiecesBeforeMove;
 
 
-    ChessHistory LastMove;
+
+    public ChessHistory LastMove;
 
     Player player1;
     Player player2;
@@ -29,6 +30,7 @@ public class ChessGame {
         this.player1=p1;
         this.player2=p2;
         this.currentMoves=0;
+        if(limit==0)limit=99999999;
         this.limit=limit;
 
         theGamePieces=new ChessPiece[9][9];
@@ -37,10 +39,10 @@ public class ChessGame {
         killHistory=new ArrayList<ChessHistory>();
         //=========================================
 
-        if(p1.getPlayerColor()==p2.getPlayerColor()){
+        if(p1.getPlayerColor()==p2.getPlayerColor()||p1.getPlayerColor()==null||p2.getPlayerColor()==null){
             //Wrong player colors :
-            p1.setPlayerColor(ConstantVar.PlayerColor.White);
-            p2.setPlayerColor(ConstantVar.PlayerColor.Black);
+            p1.setPlayerColor(ConstantVar.PlayerColor.white);
+            p2.setPlayerColor(ConstantVar.PlayerColor.black);
             //colors fixed.
         }
 
@@ -91,6 +93,11 @@ public class ChessGame {
         theGamePiecesBeforeMove=myFunc.CloneChessBoard(theGamePieces);
     }
     public boolean MakeMove(int tx,int ty) {
+        if(currentPlayer==null)return false;
+        if(currentPlayer.selectedPiece == null) {
+            System.out.println(ConstantVar.errHasNotSelected);
+            return false;
+        }
         int fx=currentPlayer.selectedPiece.x;
         int fy=currentPlayer.selectedPiece.y;
         return MakeMove(fx,fy,tx,ty);
@@ -110,8 +117,10 @@ public class ChessGame {
             return false;
         }
 
-        ChessPiece fromPiece=theGamePieces[fx][fy];
-        ChessPiece toPiece=theGamePieces[tx][ty];
+        ChessPiece fromPiece= theGamePieces[fx][fy];
+        ChessPiece toPiece=   theGamePieces[tx][ty];
+        if(fromPiece!=null)fromPiece=(ChessPiece)fromPiece.clone();
+        if(toPiece!=null)toPiece=(ChessPiece)toPiece.clone();
         if (fx == tx && fy == ty) {
             //invalid same pos
             return false;
@@ -203,21 +212,42 @@ public class ChessGame {
             GameEnd(p1, Player.gameResultSituation.Draw,p2, Player.gameResultSituation.Draw);
         }
     }
-    public void GameEnd(Player p1,Player.gameResultSituation situ1,Player p2,Player.gameResultSituation situ2){
+    public void GameEnd(
+            Player p1,Player.gameResultSituation situ1
+            ,Player p2,Player.gameResultSituation situ2){
         p1.playerGameEnd(situ1);
         p2.playerGameEnd(situ2);
-        if(situ1== Player.gameResultSituation.Draw) PrintFormatted.printGameRes(null,true);
-        else {
-            Player winner = p1;
-            if (situ1 == Player.gameResultSituation.Lose) winner = p2;
-            PrintFormatted.printGameRes(winner,false);
+
+        switch (situ1) {
+            case Draw:
+                PrintFormatted.printGameRes(null, true);
+                break;
+            case ForfeitWin:
+                PrintFormatted.printGameRes(p1, false);
+                break;
+            case Win:
+                PrintFormatted.printGameRes(p1, false);
+                break;
+            case Lose:
+                PrintFormatted.printGameRes(p2, false);
+                break;
+            case Forfeit:
+                PrintFormatted.printGameRes(p2, false);
+                break;
         }
-        Menu.situ= Menu.situation.mainMenu;
+
+        Menu.setMenuSituation(Menu.situation.mainMenu);
     }
     public void currentForfeit(){
+        System.out.println("you have forfeited");
+
+        //
         Player otherPlayer=player1;
-        if(currentPlayer==otherPlayer)otherPlayer=player2;
-        GameEnd(currentPlayer, Player.gameResultSituation.Forfeit,otherPlayer, Player.gameResultSituation.Win);
+        if(currentPlayer.getPlayerColor()
+                ==player1.getPlayerColor())otherPlayer=player2;
+
+        GameEnd(currentPlayer, Player.gameResultSituation.Forfeit
+                ,otherPlayer, Player.gameResultSituation.ForfeitWin);
     }
     public boolean currentPlayerSelect(int fx,int fy){
             if(fx<1||fy<1||fx>8||fy>8){
@@ -244,7 +274,7 @@ public class ChessGame {
                     return false;
             }
 
-            currentPlayer.selectedPiece=sp;
+            currentPlayer.Select(sp);
 
             if(ConstantVar._isDebug){
                 System.out.println(ConstantVar.successSelected+" "+sp.mapIcon+" ");
@@ -269,21 +299,24 @@ public class ChessGame {
         }
         System.out.println(ConstantVar.successTurnCompleted);
 
-        moveHistory.add(LastMove);//Add Move His tory
-        if(LastMove.toPiece!=null)killHistory.add(LastMove);
+        moveHistory.add((ChessHistory) LastMove.clone());//Add Move History
+
+        if(LastMove.toPiece!=null)killHistory.add((ChessHistory) LastMove.clone());
+
         GameCheckWin(LastMove);
 
 
         currentMoves++;
 
+        LastMove=null;
         SwitchPlayer(0);//Switch to next player
         return true;
     }
     public void currentPlayerShowTurn(){
-
+        if(currentPlayer==null)return;
         System.out.println(ConstantVar.strShowTurn
-                .replace("[player]",currentPlayer.getPlayerName())
-                .replace("[color]",currentPlayer.getPlayerColor().toString())
+                .replace("[username]",currentPlayer.getPlayerName())
+                .replace("[color]",currentPlayer.getPlayerColor()+"")
         );
     }
     public boolean currentPlayerUndo(){
@@ -309,7 +342,8 @@ public class ChessGame {
         //=============================================
         currentPlayer.hasMoved=false;
         currentPlayer.usedUndo=true;
-
+        currentPlayer.undo_remain--;
+        currentPlayer.Select(theGamePieces[currentPlayer.spX][currentPlayer.spY]);
         System.out.println(ConstantVar.successUndo);
 
         if(ConstantVar._isDebug){
@@ -326,10 +360,11 @@ public class ChessGame {
 
         switch (fromPiece.name){
             case "king":
-                return myFunc.Distance(fx,fy,tx,ty)<=1;
+                if(Math.abs(tx-fx)<=1 && Math.abs(ty-fy)<=1) return true;
+                else return false;
             case "pawn":
                 int multiplier=1;
-                if(fromPiece.OwnerColor== ConstantVar.PlayerColor.Black) {
+                if(fromPiece.OwnerColor== ConstantVar.PlayerColor.black) {
                     multiplier=-1;
                 }
                     if (fromPiece.isFirstMove && tx - fx == 2*multiplier && ty == fy) return true;
@@ -389,7 +424,7 @@ public class ChessGame {
             if(ty<fy){
                 yMultipler = -1;
             }
-            for(int i=1;i<ty-fy;i++)
+            for(int i=1;i<Math.abs(ty-fy);i++)
                 if (theGamePieces[fx+i*xMultipler][fy+i*yMultipler]!=null) return false;
             return true;
         }
@@ -397,11 +432,12 @@ public class ChessGame {
     }
     public void PrintBoard(boolean fancy,boolean flip){
         boolean IsFirst=true;
-        System.out.println("");
+
 
         if(!fancy)fancy= ConstantVar._isDebug;
 
         for (int i = 1; i < theGamePieces.length; i++) {
+
             IsFirst=true;
             for (int j = 1; j < theGamePieces[i].length; j++) {
                 ChessPiece p;
@@ -411,9 +447,8 @@ public class ChessGame {
                     p=theGamePieces[i][j];
                 }
 
-
-                if(IsFirst)IsFirst=false;
-                else System.out.print("|");
+                //if(IsFirst)IsFirst=false;
+                //else System.out.print("|");
 
                 if (fancy){
                     if(p==null) System.out.print("  ");
@@ -422,9 +457,11 @@ public class ChessGame {
                     if(p==null) System.out.print("  ");
                     else System.out.print(p.mapChar);
                 }
+                System.out.print("|");
 
             }
-            System.out.print("\n");
+            System.out.println("");
+            //System.out.print("\n");
         }
     }
     public static void startTheGame(String p1,String p2,int limit){

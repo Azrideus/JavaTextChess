@@ -9,7 +9,7 @@ import java.util.List;
 public class Player {
 
 	enum gameResultSituation {
-		Win,Lose,Draw,Forfeit
+		Win,Lose,Draw,Forfeit,ForfeitWin
 	}
 	public static List<Player> allPlayers = new ArrayList<Player>();
 
@@ -27,13 +27,18 @@ public class Player {
 	private int score;
 
 	public ChessPiece selectedPiece;
+	public int spX,spY;
 
 	public boolean hasMoved;
 	public boolean usedUndo;
 	public int undo_remain;
 
 
-
+	public void Select(ChessPiece selectedPiece){
+		this.selectedPiece=selectedPiece;
+		this.spX=selectedPiece.x;
+		this.spY=selectedPiece.y;
+	}
 	public Player(String name, String pass, Boolean isLogined) {
 		this.name = name;
 		this.pass = pass;
@@ -47,16 +52,20 @@ public class Player {
 				setDraw(getDraw()+1);
 				break;
 			case Win:
+				setScore(getScore()+3);
+				setWin(getWin()+1);
+				break;
+			case ForfeitWin:
 				setScore(getScore()+2);
 				setWin(getWin()+1);
 				break;
 			case Lose:
-				setScore(getScore()-1);
-				setLose(getLose()-1);
+				//setScore(getScore()-1);
+				setLose(getLose()+1);
 				break;
 			case Forfeit:
 				setScore(getScore()-1);
-				setLose(getLose()-1);
+				setLose(getLose()+1);
 				break;
 		}
 	}

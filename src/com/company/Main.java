@@ -23,8 +23,8 @@ public class Main {
         while(true) {
             String line=in.nextLine();
             try{
-                if(Menu.situ== Menu.situation.loginMenu) loginMenu(line);
-                else if(Menu.situ==Menu.situation.gameMenu)gameMenu(line);
+                if(Menu.getSitu()== Menu.situation.loginMenu) loginMenu(line);
+                else if(Menu.getSitu()==Menu.situation.gameMenu)gameMenu(line);
                 else mainMenu(line);
             }catch (Exception ex){
                 ex.printStackTrace();
@@ -43,7 +43,12 @@ public class Main {
         else if(input.equals("list_users"))  PrintFormatted.printPlayerNamesByOrder(Player.allPlayers,false);
         else if(input.equals("help")) System.out.println(Menu.help);
         else if(input.equals("scoreboard")) PrintFormatted.printPlayerNamesByOrder(Player.allPlayers,true);
-        else if(input.equals("logout")) p1.logOut();
+        else if(input.equals("logout")){
+            p1.logOut();
+            Main.theGame =null;
+            p1=null;
+
+        }
         else System.out.println(ConstantVar.errInvalidCmd);
     }
     private static void gameMenu(String input){
@@ -73,7 +78,7 @@ public class Main {
         }
         else if(input.equals("deselect"))theGame.currentPlayerDeselect();
         else if(input.equals("show_board"))theGame.PrintBoard(false,true);
-        else if(input.equals("end_turn"))theGame.currentPlayerEndTurn();
+        else if(input.equals("next_turn"))theGame.currentPlayerEndTurn();
         else if(input.equals("show_turn"))theGame.currentPlayerShowTurn();
         else if(input.equals("show_moves")) PrintFormatted.printHistoryMoves(false);
         else if(input.equals("show_moves -all")) PrintFormatted.printHistoryMoves(true);
@@ -82,7 +87,10 @@ public class Main {
         else if(input.equals("show_killed"))PrintFormatted.printKilledPieces(false);
         else if(input.equals("show_killed -all"))PrintFormatted.printKilledPieces(true);
          else if(input.equals("help")) System.out.println(Menu.help);
-        else if(input.equals("forfeit")) theGame.currentForfeit();
+        else if(input.equals("forfeit")){
+
+            theGame.currentForfeit();
+        }
         else System.out.println(ConstantVar.errInvalidCmd);
     }
     private static void loginMenu(String input) {

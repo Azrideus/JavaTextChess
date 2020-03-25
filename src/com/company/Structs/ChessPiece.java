@@ -8,8 +8,13 @@ import java.util.List;
 public class ChessPiece  implements Cloneable {
 
 
-    public Object clone()throws CloneNotSupportedException{
-        return super.clone();
+    public Object clone(){
+        try {
+            return super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
     public static List<ChessPiece> CreatePieces(Player p){
         List<ChessPiece> AllPieces=new ArrayList<ChessPiece>();
@@ -17,7 +22,7 @@ public class ChessPiece  implements Cloneable {
 
         int PawnRow;
         int DefaultRow;
-        if(PColor== ConstantVar.PlayerColor.White){
+        if(PColor== ConstantVar.PlayerColor.white){
             PawnRow=2;
             DefaultRow=1;
         }else{
@@ -25,7 +30,7 @@ public class ChessPiece  implements Cloneable {
             DefaultRow=8;
         }
 
-        if(PColor== ConstantVar.PlayerColor.Black) {
+        if(PColor== ConstantVar.PlayerColor.black) {
 
             for (int i = 1; i <= 8; i++) {
                 AllPieces.add(new ChessPiece(p,"pawn","Pb","♙",PawnRow,i));
@@ -37,7 +42,7 @@ public class ChessPiece  implements Cloneable {
             AllPieces.add(new ChessPiece(p,"bishop","Bb","♗" ,DefaultRow,3));
             AllPieces.add(new ChessPiece(p,"bishop","Bb","♗" ,DefaultRow,6));
             AllPieces.add(new ChessPiece(p,"queen" ,"Qb","♕" ,DefaultRow,4));
-            AllPieces.add(new ChessPiece(p,"king"  ,"Qb","♔" ,DefaultRow,5));
+            AllPieces.add(new ChessPiece(p,"king"  ,"Kb","♔" ,DefaultRow,5));
         }else{
             for (int i = 1; i <= 8; i++) {
                 AllPieces.add(new ChessPiece(p,"pawn","Pw","♟",PawnRow,i));

@@ -2,7 +2,8 @@ package com.company.Structs;
 
 import com.company.Classes.myFunc;
 
-public class ChessHistory {
+public class ChessHistory   implements Cloneable{
+
     public final int index;
     public final int fromX,fromY;
     public final int toX,toY;
@@ -10,6 +11,14 @@ public class ChessHistory {
     public final ChessPiece fromPiece;
     public final ChessPiece toPiece;
 
+    public Object clone(){
+        try {
+            return super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     public ChessHistory(int index, ChessPiece[][] theGamePiecesBeforeMove,
                         ChessPiece fromPiece, ChessPiece toPiece){
 
@@ -38,7 +47,6 @@ public class ChessHistory {
     public ChessHistory(int index, ChessPiece[][] theGamePiecesBeforeMove, int fx, int fy, int tx, int ty){
 
         this.index=index;
-
 
         this.fromX=fx;
         this.fromY=fy;
