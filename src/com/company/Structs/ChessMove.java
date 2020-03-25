@@ -1,15 +1,19 @@
 package com.company.Structs;
 
+import com.company.Classes.myFunc;
+
 public class ChessMove {
+    public final int index;
     public final int fromX,fromY;
     public final int toX,toY;
     public final ChessPiece[][] theGamePiecesBeforeMove;
     public final ChessPiece fromPiece;
     public final ChessPiece toPiece;
 
-    public ChessMove(ChessPiece[][] theGamePiecesBeforeMove,
+    public ChessMove(int index,ChessPiece[][] theGamePiecesBeforeMove,
                      ChessPiece fromPiece, ChessPiece toPiece){
 
+        this.index=index;
         this.fromPiece=fromPiece;
         this.toPiece=toPiece;
 
@@ -27,12 +31,13 @@ public class ChessMove {
             this.toX=-1;
             this.toY=-1;
         }
+        this.theGamePiecesBeforeMove= myFunc.CloneChessBoard(theGamePiecesBeforeMove);
 
-        this.theGamePiecesBeforeMove=theGamePiecesBeforeMove;
     }
 
-    public ChessMove(ChessPiece[][] theGamePiecesBeforeMove,int fx,int fy,int tx,int ty){
+    public ChessMove(int index,ChessPiece[][] theGamePiecesBeforeMove,int fx,int fy,int tx,int ty){
 
+        this.index=index;
 
 
         this.fromX=fx;
@@ -52,8 +57,7 @@ public class ChessMove {
             toPiece=null;
         }
 
-
-        this.theGamePiecesBeforeMove=theGamePiecesBeforeMove;
+        this.theGamePiecesBeforeMove= myFunc.CloneChessBoard(theGamePiecesBeforeMove);
 
     }
 

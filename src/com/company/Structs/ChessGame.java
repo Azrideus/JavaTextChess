@@ -83,19 +83,11 @@ public class ChessGame {
 
             currentPlayer.selectedPiece=null;
             currentPlayer.hasMoved=false;
+            currentPlayer.usedUndo=false;
         }
     }
     public void SaveCurrentBoard(){
-       try{
-           for (int i = 0; i <=8 ; i++) {
-               for (int j = 0; j <=8 ; j++) {
-                   theGamePiecesBeforeMove[i][j]= (ChessPiece) theGamePieces[i][j].clone();
-               }
-           }
-       }catch (Exception ex){
-           ex.printStackTrace();
-       }
-
+        theGamePiecesBeforeMove=myFunc.CloneChessBoard(theGamePieces);
     }
     public boolean MakeMove(int tx,int ty) {
         int fx=currentPlayer.selectedPiece.x;
@@ -167,7 +159,7 @@ public class ChessGame {
         //Make the move
         if(toPiece==null)System.out.println(Constant.successMoved);
         else System.out.println(Constant.successMovedAndDestroyed);
-        LastMove=new ChessMove(theGamePieces,fx,fy,tx,ty);//Save History
+        LastMove=new ChessMove(MoveHistory.size(),theGamePieces,fx,fy,tx,ty);//Save History
 
 
         //-------------
@@ -261,6 +253,10 @@ public class ChessGame {
             System.out.println(Constant.errAlreadyUsedAllUndo);
             return false;
         }
+        if(currentPlayer.usedUndo){
+            System.out.println(Constant.errAlreadyUsedThisTurnUndo);
+            return false;
+        }
         if(!currentPlayer.hasMoved){
             System.out.println(Constant.errHasNotMovedBeforeUndo);
             return false;
@@ -273,6 +269,7 @@ public class ChessGame {
         }
         //=============================================
         currentPlayer.hasMoved=false;
+        currentPlayer.usedUndo=true;
 
         System.out.println(Constant.successUndo);
 
@@ -281,6 +278,13 @@ public class ChessGame {
         }
 
         return true;
+    }
+    public void currentPlayerShowUndoNumber(){
+
+        System.out.println(Constant.strShowUndoNum
+                .replace("[n]",currentPlayer.undo_remain+"")
+
+        );
     }
 
     public boolean IsValidMove(ChessPiece fromPiece,ChessPiece toPiece,int fx,int fy,int tx,int ty){
