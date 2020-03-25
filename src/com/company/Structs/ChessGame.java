@@ -98,7 +98,11 @@ public class ChessGame {
             return false;
         }
         if (toPiece != null && fromPiece.OwnerColor == toPiece.OwnerColor) {
-            System.out.println(Constant.errChooseAnotherPlayer);
+            if(Constant._isDebug){
+                System.out.println(Constant.errCantMoveThere+" (Same color) : "+fromPiece.mapIcon+" and "+toPiece.mapIcon);
+            }else{
+                System.out.println(Constant.errCantMoveThere);
+            }
             return false;
         }
         if (fromPiece.Owner != currentPlayer) {
@@ -107,11 +111,21 @@ public class ChessGame {
         }
 
         if (fromPiece == toPiece){
-            System.out.println(Constant.errCantMoveThere);
+
+            if(Constant._isDebug){
+                System.out.println(Constant.errCantMoveThere+" (Same Piece) ");
+            }else{
+                System.out.println(Constant.errCantMoveThere);
+            }
         }
 
         if(!IsValidMove(fromPiece,toPiece,fx,fy,tx,ty)){
-            System.out.println(Constant.errCantMoveThere);
+
+            if(Constant._isDebug){
+                System.out.println(Constant.errCantMoveThere+" (Invalid Move) ");
+            }else{
+                System.out.println(Constant.errCantMoveThere);
+            }
             return false;
         }
 
@@ -121,13 +135,95 @@ public class ChessGame {
         //Make the move
         MoveHistory.add(new ChessMove(theGamePieces,fx,fy,tx,ty));//Save History
 
+
+        //-------------
+        if(toPiece!=null){
+            System.out.println(Constant.successMoved);
+        }else{
+            System.out.println(Constant.successMovedAndDestroyed);
+        }
         theGamePieces[tx][ty]=null;//Capture if any exists
+        //-------------
+
 
         theGamePieces[tx][ty]=fromPiece;//move
         theGamePieces[fx][fy]=null;//Set old to null
+
+
         fromPiece.isFirstMove=false;
+
+        currentPlayer.hasMoved=true;
+
+
         return true;
     }
+
+    public ChessPiece getPieceByPosition(int fx,int fy){
+        if(fx<1||fy<1||fx>8||fy>8){
+            return null;
+        }
+        return theGamePieces[fx][fy];
+    }
+    public boolean currentPlayerSelect(int fx,int fy){
+            if(fx<1||fy<1||fx>8||fy>8){
+                System.out.println(Constant.errPieceOutOfRange);
+                return false;
+            }
+            ChessPiece sp=getPieceByPosition(fx,fy);
+            if(sp==null){
+                System.out.println(Constant.errNoPiece);
+                return false;
+            }
+            if(currentPlayer==null){
+                //ERROR Current player is null ! (Should never happen)
+                System.out.println(Constant.errUnknown);
+                return false;
+            }
+            if (sp.Owner != currentPlayer) {
+                    //invalid , not my piece
+                    System.out.println(Constant.errIsYourEnemyPiece);
+                    if(Constant._isDebug){
+                        System.out.println(" [deubg] "+sp.mapIcon+" is a piece of "+sp.Owner.getPlayerName()+" : "+sp.OwnerColor);
+                    }
+                    return false;
+            }
+
+            currentPlayer.selectedPiece=sp;
+
+            if(Constant._isDebug){
+                System.out.println(Constant.successSelected+" "+sp.mapIcon+" ");
+            }
+            else  System.out.println(Constant.successSelected);
+
+          return true;
+    }
+    public boolean currentPlayerDeselect(){
+
+        if(currentPlayer.selectedPiece==null){
+            System.out.println(Constant.errNoPiece);
+            return false;
+        }
+        currentPlayer.selectedPiece=null;
+        System.out.println(Constant.successDeselected);
+        return true;
+    }
+    public boolean currentPlayerEndTurn(){
+        if(currentPlayer==null||currentPlayer.hasMoved==false){
+            System.out.println(Constant.errHasNotMoved);
+            return false;
+        }
+        System.out.println(Constant.successTurnCompleted);
+        SwitchPlayer(0);
+        return true;
+    }
+    public void currentPlayerShowTurn(){
+
+        System.out.println(Constant.strShowTurn
+                .replace("[player]",currentPlayer.getPlayerName())
+                .replace("[color]",currentPlayer.getPlayerColor().toString())
+        );
+    }
+
     public boolean IsValidMove(ChessPiece fromPiece,ChessPiece toPiece,int fx,int fy,int tx,int ty){
         if(fromPiece==null)return false;
         if(toPiece!=null&&(fromPiece.OwnerColor == toPiece.OwnerColor))return false;
@@ -195,61 +291,10 @@ public class ChessGame {
             }
             for(int i=1;i<ty-fy;i++)
                 if (theGamePieces[fx+i][fy+i]!=null) return false;
-                return true;
+            return true;
         }
         else return false;
     }
-    public ChessPiece getPieceByPosition(int fx,int fy){
-        if(fx<1||fy<1||fx>8||fy>8){
-            return null;
-        }
-        return theGamePieces[fx][fy];
-    }
-    public boolean currentPlayerSelect(int fx,int fy){
-            if(fx<1||fy<1||fx>8||fy>8){
-                System.out.println(Constant.errPieceOutOfRange);
-                return false;
-            }
-            ChessPiece sp=getPieceByPosition(fx,fy);
-            if(sp==null){
-                System.out.println(Constant.errNoPiece);
-                return false;
-            }
-            if(currentPlayer==null){
-                //ERROR Current player is null ! (Should never happen)
-                System.out.println(Constant.errUnknown);
-                return false;
-            }
-            if (sp.Owner != currentPlayer) {
-                    //invalid , not my piece
-                    System.out.println(Constant.errIsYourEnemyPiece);
-                    if(Constant._isDebug){
-                        System.out.println(" [deubg] "+sp.mapIcon+" is a piece of "+sp.Owner.getPlayerName()+" : "+sp.OwnerColor);
-                    }
-                    return false;
-            }
-
-            currentPlayer.selectedPiece=sp;
-
-            if(Constant._isDebug){
-                System.out.println(Constant.successSelected+" "+sp.mapIcon+" ");
-            }
-            else  System.out.println(Constant.successSelected);
-
-          return true;
-    }
-    public boolean currentPlayerDeselect(){
-
-        if(currentPlayer.selectedPiece==null){
-            System.out.println(Constant.errNoPiece);
-            return false;
-        }
-        currentPlayer.selectedPiece=null;
-        System.out.println(Constant.successDeselected);
-        return true;
-    }
-
-
     public void PrintBoard(boolean fancy,boolean flip){
         boolean IsFirst=true;
         System.out.println("");

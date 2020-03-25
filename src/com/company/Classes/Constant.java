@@ -44,5 +44,9 @@ public class Constant {
 	public  static String successDeselected="deselected";
 	public  static String successMovedAndDestroyed="rival piece destroyed";
 	public  static String successMoved="moved";
+	public  static String successTurnCompleted="turn completed";
 	public  static String successUndo="undo completed";
+
+
+	public  static String strShowTurn="it is player [username] turn with color [color]";
 }
