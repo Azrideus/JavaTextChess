@@ -127,6 +127,9 @@ public class ChessGame {
         switch (fromPiece.name){
             case "king":
                 return myFunc.Distance(fx,fy,tx,ty)<=1;
+            case "pawn":
+
+                break;
         }
         return true;
     }
