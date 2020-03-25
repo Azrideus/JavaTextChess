@@ -71,7 +71,9 @@ public class Main {
         else if(input.equals("undo_number"))theGame.currentPlayerUndo();
         else if(input.equals("show_killed"))PrintFormatted.printKilledPieces(false);
         else if(input.equals("show_killed -all"))PrintFormatted.printKilledPieces(true);
-
+        else if(input.equals("undo_number")) System.out.println("you have "+theGame.currentPlayer.undo_remain+" undo moves");
+        else if(input.equals("help")) System.out.println(Menu.help);
+        else if(input.equals("forfeit")) ;
         else System.out.println(Constant.errInvalidCmd);
     }
     private static void loginMenu(String input) {
