@@ -62,6 +62,8 @@ public class Main {
         }
         else if(input.equals("deselect"))theGame.currentPlayerDeselect();
         else if(input.equals("show_board"))theGame.PrintBoard(false,true);
+        else if(input.equals("end_turn"))theGame.currentPlayerEndTurn();
+        else if(input.equals("show_turn"))theGame.currentPlayerShowTurn();
         else System.out.println(Constant.errInvalidCmd);
     }
     private static void loginMenu(String input) {
@@ -95,12 +97,6 @@ public class Main {
         else System.out.println(Constant.errInvalidCmd);
         return;
     }
-
-
-
-
-
-
 
 
     private static Matcher getMatcher(String line, String regex) {

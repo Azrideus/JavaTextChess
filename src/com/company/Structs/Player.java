@@ -24,6 +24,7 @@ public class Player {
 	private int score;
 
 	public ChessPiece selectedPiece;
+
 	public boolean hasMoved;
 
 
