@@ -142,7 +142,7 @@ public class ChessGame {
 
 
         //-------------
-        if(toPiece!=null){
+        if(toPiece==null){
             System.out.println(Constant.successMoved);
         }else{
             System.out.println(Constant.successMovedAndDestroyed);
@@ -236,12 +236,19 @@ public class ChessGame {
             case "king":
                 return myFunc.Distance(fx,fy,tx,ty)<=1;
             case "pawn":
-                if(fromPiece.isFirstMove&&tx-fx==2&&ty==tx) return true;
-                else if(ty==fy&&tx-ty==1) return true;
-                else if(toPiece!=null && toPiece.Owner!=this.currentPlayer && tx-fx==1 && Math.abs(ty-fy)==1) return true;
-                else return false;
+                int multiplier=1;
+                if(fromPiece.OwnerColor== Constant.PlayerColor.Black) {
+                    multiplier=-1;
+                }
+                    if (fromPiece.isFirstMove && tx - fx == 2*multiplier && ty == tx) return true;
+                    else if (ty == fy && tx - fx == 1*multiplier) return true;
+                    else if (toPiece != null && toPiece.Owner != this.currentPlayer && tx - fx == 1*multiplier && Math.abs(ty - fy) == 1)
+                        return true;
+                    else return false;
+
+
             case "knight":
-                if((Math.abs(tx-fx)==2&& Math.abs(ty-fy)==1) || (Math.abs(ty-tx)==1 && Math.abs(ty-fy)==2)) return true;
+                if((Math.abs(tx-fx)==2&& Math.abs(ty-fy)==1) || (Math.abs(ty-fx)==1 && Math.abs(ty-fy)==2)) return true;
                 else return false;
             case "rook":
                 if(ty==fy || tx==fx){
