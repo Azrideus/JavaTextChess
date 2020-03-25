@@ -69,6 +69,9 @@ public class Main {
         else if(input.equals("show_moves -all")) PrintFormatted.printHistoryMoves(true);
         else if(input.equals("undo"))theGame.currentPlayerUndo();
         else if(input.equals("undo_number"))theGame.currentPlayerUndo();
+        else if(input.equals("show_killed"))PrintFormatted.printKilledPieces(false);
+        else if(input.equals("show_killed -all"))PrintFormatted.printKilledPieces(true);
+
         else System.out.println(Constant.errInvalidCmd);
     }
     private static void loginMenu(String input) {

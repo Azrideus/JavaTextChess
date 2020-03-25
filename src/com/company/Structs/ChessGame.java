@@ -301,7 +301,7 @@ public class ChessGame {
                 if(fromPiece.OwnerColor== Constant.PlayerColor.Black) {
                     multiplier=-1;
                 }
-                    if (fromPiece.isFirstMove && tx - fx == 2*multiplier && ty == tx) return true;
+                    if (fromPiece.isFirstMove && tx - fx == 2*multiplier && ty == fy) return true;
                     else if (ty == fy && tx - fx == 1*multiplier) return true;
                     else if (toPiece != null && toPiece.Owner != this.currentPlayer && tx - fx == 1*multiplier && Math.abs(ty - fy) == 1)
                         return true;
@@ -427,8 +427,8 @@ public class ChessGame {
                         .replace("[first]",p1)
                         .replace("[second]",p2)
                         .replace("[limit]",limit+"")
-                )
-                        ;
+                );
+
             }
 
         }
