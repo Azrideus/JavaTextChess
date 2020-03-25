@@ -23,24 +23,22 @@ public class PrintFormatted {
         for (ChessHistory item:
              Main.theGame.MoveHistory) {
             if(!allMoves && item.fromPiece.Owner!=Main.theGame.currentPlayer) continue;
-            String move = "** " +item.fromPiece.mapChar+" "+"x1, y1 to x2, y2";
+            String move = "**" +item.fromPiece.mapChar+" "+"x1, y1 to x2, y2";
             move.replace("x1",item.fromPiece.x+"").replace("y1",item.fromPiece.y+"");
             move.replace("x2",item.toPiece.x+"").replace("y2",item.toPiece.y+"");
             if(item.toPiece!=null) move+="destroyed "+item.toPiece.mapChar;
-            move+=" **";
+            move+="**";
             System.out.println(move);
         }
     }
-    public static void printKilledPieces(boolean allPeaces){
-        for (ChessPiece item:
-                Main.theGame.) {
-            if(!allMoves && item.fromPiece.Owner!=Main.theGame.currentPlayer) continue;
-            String move = "** " +item.fromPiece.mapChar+" "+"x1, y1 to x2, y2";
-            move.replace("x1",item.fromPiece.x+"").replace("y1",item.fromPiece.y+"");
-            move.replace("x2",item.toPiece.x+"").replace("y2",item.toPiece.y+"");
-            if(item.toPiece!=null) move+="destroyed "+item.toPiece.mapChar;
-            move+=" **";
-            System.out.println(move);
+    public static void printKilledPieces(boolean allpieces){
+        for (ChessMove item:
+                Main.theGame.KillHistory) {
+            if(!allpieces && item.fromPiece.Owner!=Main.theGame.currentPlayer) continue;
+            String killed = "**" +item.fromPiece+" "+"killed in spot "+"x1, y1";
+            killed.replace("x1",item.toPiece.x+"").replace("y1",item.toPiece.y+"");
+            killed+="**";
+            System.out.println(killed);
         }
     }
 }
