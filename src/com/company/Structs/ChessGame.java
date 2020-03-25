@@ -85,11 +85,11 @@ public class ChessGame {
             //invalid
             return false;
         }
-        else if(toPiece!=null&&fromPiece.OwnerColor==toPiece.OwnerColor){
+        if(toPiece!=null&&fromPiece.OwnerColor==toPiece.OwnerColor){
             //invalid same color
             return false;
         }
-        else if(fromPiece==toPiece){
+        if(fromPiece==toPiece){
             //invalid same position
             return false;
         }
@@ -107,6 +107,12 @@ public class ChessGame {
         fromPiece.isFirstMove=false;
         return true;
     }
+    public ChessPiece getPieceByPosition(int fx,int fy){
+        if(fx<1||fy<1||fx>8||fy>8)return null;
+        return theGamePieces[fx][fy];
+    }
+
+
     public void PrintBoard(boolean fancy,boolean flip){
         boolean IsFirst=true;
         System.out.println("");
