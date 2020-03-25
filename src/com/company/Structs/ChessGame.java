@@ -12,6 +12,9 @@ public class ChessGame {
     ChessPiece[][] theGamePiecesBeforeMove;
 
     public List<ChessMove> MoveHistory;
+
+    ChessMove LastMove;
+
     Player player1;
     Player player2;
 
@@ -83,11 +86,16 @@ public class ChessGame {
         }
     }
     public void SaveCurrentBoard(){
-        for (int i = 0; i <=8 ; i++) {
-            for (int j = 0; j <=8 ; j++) {
-                theGamePiecesBeforeMove[i][j]=theGamePieces[i][j];
-            }
-        }
+       try{
+           for (int i = 0; i <=8 ; i++) {
+               for (int j = 0; j <=8 ; j++) {
+                   theGamePiecesBeforeMove[i][j]= (ChessPiece) theGamePieces[i][j].clone();
+               }
+           }
+       }catch (Exception ex){
+           ex.printStackTrace();
+       }
+
     }
     public boolean MakeMove(int tx,int ty) {
         int fx=currentPlayer.selectedPiece.x;
@@ -159,7 +167,8 @@ public class ChessGame {
         //Make the move
         if(toPiece==null)System.out.println(Constant.successMoved);
         else System.out.println(Constant.successMovedAndDestroyed);
-        MoveHistory.add(new ChessMove(theGamePieces,fx,fy,tx,ty));//Save History
+        LastMove=new ChessMove(theGamePieces,fx,fy,tx,ty);//Save History
+
 
         //-------------
         theGamePieces[tx][ty]=null;//Capture if any exists
@@ -220,7 +229,6 @@ public class ChessGame {
           return true;
     }
     public boolean currentPlayerDeselect(){
-
         if(currentPlayer.selectedPiece==null){
             System.out.println(Constant.errNoPiece);
             return false;
@@ -230,12 +238,14 @@ public class ChessGame {
         return true;
     }
     public boolean currentPlayerEndTurn(){
-        if(currentPlayer==null||currentPlayer.hasMoved==false){
+        if(currentPlayer==null|| !currentPlayer.hasMoved){
             System.out.println(Constant.errHasNotMoved);
             return false;
         }
         System.out.println(Constant.successTurnCompleted);
-        SwitchPlayer(0);
+
+        MoveHistory.add(LastMove);//Add Move History
+        SwitchPlayer(0);//Switch to next player
         return true;
     }
     public void currentPlayerShowTurn(){
@@ -263,12 +273,16 @@ public class ChessGame {
         }
         //=============================================
         currentPlayer.hasMoved=false;
+
         System.out.println(Constant.successUndo);
+
         if(Constant._isDebug){
             PrintBoard(true,true);
         }
+
         return true;
     }
+
     public boolean IsValidMove(ChessPiece fromPiece,ChessPiece toPiece,int fx,int fy,int tx,int ty){
         if(fromPiece==null)return false;
         if(toPiece!=null&&(fromPiece.OwnerColor == toPiece.OwnerColor))return false;
