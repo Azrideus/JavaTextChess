@@ -7,16 +7,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Player {
+
 	public static List<Player> allPlayers = new ArrayList<Player>();
-	private String name;
-	private String pass;
+
+
+	private final String name;
+	private final String pass;
+
 	private boolean isLogined;
+
+
 	private Constant.PlayerColor playerColor;
 	private int win;
 	private int lose;
 	private int draw;
 	private int score;
-	public static List<ChessPiece> MyChessPieces;
+
+	public ChessPiece selectedPiece;
+	public boolean hasMoved;
+
+
 
 	public Player(String name, String pass, Boolean isLogined) {
 		this.name = name;

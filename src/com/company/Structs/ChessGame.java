@@ -14,6 +14,8 @@ public class ChessGame {
     Player currentPlayer;
     int limit;
     int currentMoves=0;
+
+
     public ChessGame(Player p1,Player p2,int limit){
         this.player1=p1;
         this.player2=p2;
@@ -39,10 +41,34 @@ public class ChessGame {
             ChessPiece.CreatePieces(p2)) {
             theGamePieces[p.OriginalX][p.OriginalY]=p;
         }
-        currentPlayer=player1;
+        SwitchPlayer(1);
         //========================================
         //PrintBoard(true);
     }
+
+
+    public void SwitchPlayer(int pIndex){
+
+        if(pIndex<=0){//If index == 0  toggle the Player
+            if(currentPlayer!=player1){
+                pIndex=1;
+            }else{
+                pIndex=2;
+            }
+        }
+
+        //=== set player from index
+        if(pIndex==1)currentPlayer=player1;
+        else if(pIndex==2)currentPlayer=player2;
+        if(currentPlayer!=null){
+            if(Constant._isDebug){
+                System.out.println("[ Its "+currentPlayer.getPlayerName()+"'s turn ! ]");
+            }
+            currentPlayer.selectedPiece=null;
+            currentPlayer.hasMoved=false;
+        }
+    }
+
 
     public boolean MakeMove(int fx,int fy,int tx,int ty){
         if(fx<1||fy<1||tx<1||ty<1
@@ -81,13 +107,22 @@ public class ChessGame {
         fromPiece.isFirstMove=false;
         return true;
     }
-    public void PrintBoard(boolean fancy){
+    public void PrintBoard(boolean fancy,boolean flip){
         boolean IsFirst=true;
-        for (int i = 1; i < theGamePieces.length; i++) {
+        System.out.println("");
 
+        if(!fancy)fancy=Constant._isDebug;
+
+        for (int i = 1; i < theGamePieces.length; i++) {
             IsFirst=true;
             for (int j = 1; j < theGamePieces[i].length; j++) {
-                ChessPiece p=theGamePieces[i][j];
+                ChessPiece p;
+                if(flip){
+                    p=theGamePieces[i][9-j];
+                }else{
+                    p=theGamePieces[i][j];
+                }
+
 
                 if(IsFirst)IsFirst=false;
                 else System.out.print("|");
