@@ -8,6 +8,9 @@ import java.util.List;
 
 public class Player {
 
+	enum gameResultSituation {
+		Win,Lose,Draw,Forfeit
+	}
 	public static List<Player> allPlayers = new ArrayList<Player>();
 
 
@@ -37,7 +40,26 @@ public class Player {
 		this.isLogined = isLogined;
 		allPlayers.add(this);
 	}
-
+	public void playerGameEnd(gameResultSituation wld) {
+		switch (wld){
+			case Draw:
+				setScore(getScore()+1);
+				setDraw(getDraw()+1);
+				break;
+			case Win:
+				setScore(getScore()+2);
+				setWin(getWin()+1);
+				break;
+			case Lose:
+				setScore(getScore()-1);
+				setLose(getLose()-1);
+				break;
+			case Forfeit:
+				setScore(getScore()-1);
+				setLose(getLose()-1);
+				break;
+		}
+	}
 	public void logOut() {
 		System.out.println(Constant.successLogOut);
 		this.isLogined = false;

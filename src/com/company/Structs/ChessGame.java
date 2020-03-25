@@ -9,12 +9,12 @@ import java.util.List;
 
 public class ChessGame {
     ChessPiece[][] theGamePieces;
-    public List<ChessMove> moveHistory;
-    public List<ChessMove> killHistory;
+    public List<ChessHistory> moveHistory;
+    public List<ChessHistory> killHistory;
     ChessPiece[][] theGamePiecesBeforeMove;
 
 
-    ChessMove LastMove;
+    ChessHistory LastMove;
 
     Player player1;
     Player player2;
@@ -32,7 +32,7 @@ public class ChessGame {
 
         theGamePieces=new ChessPiece[9][9];
         theGamePiecesBeforeMove=new ChessPiece[9][9];
-        moveHistory=new ArrayList<ChessMove>();
+        moveHistory=new ArrayList<ChessHistory>();
         //=========================================
 
         if(p1.getPlayerColor()==p2.getPlayerColor()){
@@ -58,8 +58,6 @@ public class ChessGame {
         //========================================
         //PrintBoard(true);
     }
-
-
     public void SwitchPlayer(int pIndex){
 
         if(pIndex<=0){//If index == 0  toggle the Player
@@ -160,7 +158,7 @@ public class ChessGame {
         //Make the move
         if(toPiece==null)System.out.println(Constant.successMoved);
         else System.out.println(Constant.successMovedAndDestroyed);
-        LastMove=new ChessMove(moveHistory.size(),theGamePieces,fx,fy,tx,ty);//Save History
+        LastMove=new ChessHistory(moveHistory.size(),theGamePieces,fx,fy,tx,ty);//Save History
 
 
         //-------------
@@ -186,6 +184,23 @@ public class ChessGame {
             return null;
         }
         return theGamePieces[fx][fy];
+    }
+
+    public void GameCheckWin(ChessHistory ch){
+        if(ch.toPiece!=null&& ch.toPiece.name.equals("king")){
+            var Winner=ch.fromPiece.Owner;
+            var Loser=ch.toPiece.Owner;
+            GameEnd(Winner, Player.gameResultSituation.Win,Loser, Player.gameResultSituation.Lose);
+        }
+        if(currentMoves>limit){
+            var p1=ch.fromPiece.Owner;
+            var p2=ch.toPiece.Owner;
+            GameEnd(p1, Player.gameResultSituation.Draw,p2, Player.gameResultSituation.Draw);
+        }
+    }
+    public void GameEnd(Player p1,Player.gameResultSituation situ1,Player p2,Player.gameResultSituation situ2){
+        p1.playerGameEnd(situ1);
+        p2.playerGameEnd(situ2);
     }
     public boolean currentPlayerSelect(int fx,int fy){
             if(fx<1||fy<1||fx>8||fy>8){
@@ -239,6 +254,10 @@ public class ChessGame {
 
         moveHistory.add(LastMove);//Add Move His tory
         if(LastMove.toPiece!=null)killHistory.add(LastMove);
+        GameCheckWin(LastMove);
+
+
+        currentMoves++;
 
         SwitchPlayer(0);//Switch to next player
         return true;
@@ -293,6 +312,8 @@ public class ChessGame {
     public boolean IsValidMove(ChessPiece fromPiece,ChessPiece toPiece,int fx,int fy,int tx,int ty){
         if(fromPiece==null)return false;
         if(toPiece!=null&&(fromPiece.OwnerColor == toPiece.OwnerColor))return false;
+        boolean AbsEquals = Math.abs(tx - fx) == Math.abs(ty - fy);
+
         switch (fromPiece.name){
             case "king":
                 return myFunc.Distance(fx,fy,tx,ty)<=1;
@@ -303,28 +324,26 @@ public class ChessGame {
                 }
                     if (fromPiece.isFirstMove && tx - fx == 2*multiplier && ty == fy) return true;
                     else if (ty == fy && tx - fx == 1*multiplier) return true;
-                    else if (toPiece != null && toPiece.Owner != this.currentPlayer && tx - fx == 1*multiplier && Math.abs(ty - fy) == 1)
+                    else if (toPiece != null && toPiece.Owner != this.currentPlayer
+                            && tx - fx == 1*multiplier && Math.abs(ty - fy) == 1)
                         return true;
                     else return false;
 
 
             case "knight":
-                if((Math.abs(tx-fx)==2&& Math.abs(ty-fy)==1) || (Math.abs(ty-fx)==1 && Math.abs(ty-fy)==2)) return true;
-                else return false;
+                return (Math.abs(tx - fx) == 2 && Math.abs(ty - fy) == 1) || (Math.abs(ty - fx) == 1 && Math.abs(ty - fy) == 2);
             case "rook":
                 if(ty==fy || tx==fx){
-                    if(isFreeSpace(fx,fy,tx,ty)) return true;
+                    return isFreeSpace(fx, fy, tx, ty);
                 }
                 return false;
             case "bishop":
-                if(Math.abs(tx-fx)==Math.abs(ty-fy) && isFreeSpace(fx, fy, tx, ty)) return true;
-                else return false;
+                return AbsEquals && isFreeSpace(fx, fy, tx, ty);
             case "queen":
                 if(ty==fy || tx==fx){
                     if(isFreeSpace(fx,fy,tx,ty)) return true;
                 }
-                else if(Math.abs(tx-fx)==Math.abs(ty-fy) && isFreeSpace(fx, fy, tx, ty)) return true;
-                else return false;
+                else return AbsEquals && isFreeSpace(fx, fy, tx, ty);
         }
         return true;
     }

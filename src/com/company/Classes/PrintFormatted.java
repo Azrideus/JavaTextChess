@@ -1,7 +1,7 @@
 package com.company.Classes;
 
 import com.company.Main;
-import com.company.Structs.ChessMove;
+import com.company.Structs.ChessHistory;
 import com.company.Structs.ChessPiece;
 import com.company.Structs.Player;
 
@@ -20,7 +20,7 @@ public class PrintFormatted {
         }
     }
     public static void printHistoryMoves(boolean allMoves){
-        for (ChessMove item:
+        for (ChessHistory item:
              Main.theGame.MoveHistory) {
             if(!allMoves && item.fromPiece.Owner!=Main.theGame.currentPlayer) continue;
             String move = "** " +item.fromPiece.mapChar+" "+"x1, y1 to x2, y2";

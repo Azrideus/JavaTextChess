@@ -2,7 +2,7 @@ package com.company.Structs;
 
 import com.company.Classes.myFunc;
 
-public class ChessMove {
+public class ChessHistory {
     public final int index;
     public final int fromX,fromY;
     public final int toX,toY;
@@ -10,8 +10,8 @@ public class ChessMove {
     public final ChessPiece fromPiece;
     public final ChessPiece toPiece;
 
-    public ChessMove(int index,ChessPiece[][] theGamePiecesBeforeMove,
-                     ChessPiece fromPiece, ChessPiece toPiece){
+    public ChessHistory(int index, ChessPiece[][] theGamePiecesBeforeMove,
+                        ChessPiece fromPiece, ChessPiece toPiece){
 
         this.index=index;
         this.fromPiece=fromPiece;
@@ -35,7 +35,7 @@ public class ChessMove {
 
     }
 
-    public ChessMove(int index,ChessPiece[][] theGamePiecesBeforeMove,int fx,int fy,int tx,int ty){
+    public ChessHistory(int index, ChessPiece[][] theGamePiecesBeforeMove, int fx, int fy, int tx, int ty){
 
         this.index=index;
 
