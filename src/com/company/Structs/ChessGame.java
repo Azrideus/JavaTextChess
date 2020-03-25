@@ -93,7 +93,6 @@ public class ChessGame {
             System.out.println(Constant.errChooseAnotherPlayer);
             return false;
         }
-
         if (fromPiece.Owner != currentPlayer) {
             //invalid , not my piece
             return false;
