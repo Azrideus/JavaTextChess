@@ -19,7 +19,7 @@ public class ChessGame {
         this.player2=p2;
         this.currentMoves=0;
         this.limit=limit;
-        
+
         theGamePieces=new ChessPiece[9][9];
         MoveHistory=new ArrayList<ChessMove>();
         //=========================================
@@ -32,11 +32,11 @@ public class ChessGame {
         }
 
         for (ChessPiece p:
-        ChessPiece.CreatePieces(p1)) {
+            ChessPiece.CreatePieces(p1)) {
             theGamePieces[p.OriginalX][p.OriginalY]=p;
         }
         for (ChessPiece p:
-                ChessPiece.CreatePieces(p2)) {
+            ChessPiece.CreatePieces(p2)) {
             theGamePieces[p.OriginalX][p.OriginalY]=p;
         }
         currentPlayer=player1;
@@ -59,6 +59,15 @@ public class ChessGame {
             //invalid
             return false;
         }
+        else if(toPiece!=null&&fromPiece.OwnerColor==toPiece.OwnerColor){
+            //invalid same color
+            return false;
+        }
+        else if(fromPiece==toPiece){
+            //invalid same position
+            return false;
+        }
+
 
 
         //===================================
