@@ -1,7 +1,7 @@
 package com.company.Structs;
 
 public class Menu {
-	public  static enum situation{loginMenu,mainMenu,gameMenue};
+	public  static enum situation{loginMenu,mainMenu,gameMenu};
 	public  static situation situ=situation.loginMenu;
 	public  static String help;
 	static public void setMenuSituation(situation situ) {
@@ -17,7 +17,7 @@ public class Menu {
 				"list_users\r\n" + 
 				"help\r\n" + 
 				"logout;";
-		else if(situ==situation.gameMenue) Menu.help="select [x],[y]\r\n" + 
+		else if(situ==situation.gameMenu) Menu.help="select [x],[y]\r\n" +
 				"deselect\r\n" + 
 				"move [x],[y]\r\n" + 
 				"next_turn\r\n" + 
