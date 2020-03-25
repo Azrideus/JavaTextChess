@@ -17,7 +17,7 @@ public class myFunc {
         return null;
     }
 
-    private static List<Player> playersOrderAlphabetically(List<Player> players) {
+    public static List<Player> playersOrderAlphabetically(List<Player> players) {
         for (int i = 0; i < players.size(); i++) {
             for (int j = 0; j < players.size() - 1 - i; j++) {
                 if (players.get(j).getPlayerName().compareTo(players.get(j + 1).getPlayerName()) > 0) {
@@ -30,17 +30,7 @@ public class myFunc {
         return players;
     }
 
-    public static void printPlayerNamesByOrder(List<Player> players, Boolean isScoarBoard) {
-        if (!isScoarBoard) {
-            List<Player> p = playersOrderAlphabetically(players);
-        } else {
-            List<Player> p = playersOrderScoreboard(players);
-        }
-        for (int i = 0; i < players.size(); i++) {
-            Player p = players.get(i);
-            System.out.println(p.getPlayerName()+" "+p.getScore()+" "+p.getWin()+" "+p.getDraw()+" "+p.getLose());
-        }
-    }
+
 
     private static List<Player> swichPlayers(List<Player> players, int index1, int index2) {
         Player player = players.get(index1);
@@ -49,7 +39,7 @@ public class myFunc {
         return players;
     }
 
-    private static List<Player> playersOrderScoreboard(List<Player> players) {
+    public static List<Player> playersOrderScoreboard(List<Player> players) {
         for (int i = 0; i < players.size(); i++) {
             for (int j = 0; j < players.size() - 1 - i; j++) {
                 Player p1 = players.get(j);

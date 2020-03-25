@@ -9,11 +9,11 @@ import java.util.List;
 
 public class ChessGame {
     ChessPiece[][] theGamePieces;
-    List<ChessMove> MoveHistory;
+    public static List<ChessMove> MoveHistory;
     Player player1;
     Player player2;
 
-    Player currentPlayer;
+    public Player currentPlayer;
     int limit;
     int currentMoves=0;
 

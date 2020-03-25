@@ -1,6 +1,7 @@
 package com.company;
 
 import com.company.Classes.Constant;
+import com.company.Classes.PrintFormatted;
 import com.company.Classes.myFunc;
 import com.company.Structs.ChessGame;
 import com.company.Structs.ChessPiece;
@@ -41,9 +42,9 @@ public class Main {
             Matcher matcher = getMatcher(input,Constant.regexNewGame);
             ChessGame.startTheGame(p1.getPlayerName(),matcher.group(1),Integer.valueOf(matcher.group(2)));
         }
-        else if(input.equals("list_users"))  myFunc.printPlayerNamesByOrder(Player.allPlayers,false);
+        else if(input.equals("list_users"))  PrintFormatted.printPlayerNamesByOrder(Player.allPlayers,false);
         else if(input.equals("help")) System.out.println(Menu.help);
-        else if(input.equals("scoreboard")) myFunc.printPlayerNamesByOrder(Player.allPlayers,true);
+        else if(input.equals("scoreboard")) PrintFormatted.printPlayerNamesByOrder(Player.allPlayers,true);
         else if(input.equals("logout")) p1.logOut();
         else System.out.println(Constant.errInvalidCmd);
     }
@@ -64,6 +65,8 @@ public class Main {
         else if(input.equals("show_board"))theGame.PrintBoard(false,true);
         else if(input.equals("end_turn"))theGame.currentPlayerEndTurn();
         else if(input.equals("show_turn"))theGame.currentPlayerShowTurn();
+        else if(input.equals("show_moves")) PrintFormatted.printHistoryMoves(false);
+        else if(input.equals("show_moves -all")) PrintFormatted.printHistoryMoves(true);
         else System.out.println(Constant.errInvalidCmd);
     }
     private static void loginMenu(String input) {
@@ -80,7 +83,7 @@ public class Main {
             Player.remove(matcher.group(1),matcher.group(2));
         }
         else if(input.equals("list_users")) {
-            myFunc.printPlayerNamesByOrder(Player.allPlayers,false);
+            PrintFormatted.printPlayerNamesByOrder(Player.allPlayers,false);
         }
         else if(input.equals("help")) {
             System.out.println(Menu.help);
